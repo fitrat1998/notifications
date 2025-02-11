@@ -91,6 +91,29 @@
             margin-left: 200px;
         }
 
+
+        .header .span5 {
+            text-align: left;
+            flex-grow: 1;
+            font-size: 16px;
+            margin-right: 50px;
+        }
+
+        .header .span6 {
+            text-align: center;
+            flex-grow: 1;
+            font-size: 16px;
+            margin-left: 175px;
+            font-family: "DejaVu Sans", "Arial Unicode MS", sans-serif, "Times New Roman";
+        }
+
+        .header .span7 {
+            text-align: right;
+            flex-grow: 1;
+            font-size: 16px;
+            margin-left: 100px;
+        }
+
         .content {
             font-size: 16px;
             line-height: 1.5;
@@ -126,24 +149,26 @@
         <p><strong>{!! $userdocument->comment  !!}</p>
 
 
-        <div class="header">
-            @php
-                $lastUser = $users->last();
-                $remainingUsers = $users->except($users->keys()->last());
-            @endphp
+        @php
+            $lastUser = $users->last();
+            $remainingUsers = $users->except($users->keys()->last());
+        @endphp
+        <div class="header d-flex justify-content-between align-items-center">
+            <span class="span5">{{ $lastUser->position ?? 'Rektor' }}</span>
 
-            <span class="span1 "><span>{{ $documenttype->name  }}</span><br>{{ $userdocument->created_at->format('d-m-Y') }}</span>
 
-            <span class="span"> {{ $userdocument->id }}</span>
+            <span class="span6 d-flex justify-content-center">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code" width="100">
+    </span>
 
-            <span class="span3">Samarqand sh.</span>
+            <span class="span7">
+        @if($lastUser)
+                    {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}.
+                    {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}. {{ $lastUser->lastname }}
+                @endif
+    </span>
         </div>
 
-
-        @if($lastUser)
-            {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}
-                . {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}. {{ $lastUser->lastname }}</p>
-        @endif
 
         <p><strong>Loyiha yaratuvchisi:</strong> {{ $author->position }}
             - {{ strtoupper(substr($author->firstname, 0, 1)) }}
