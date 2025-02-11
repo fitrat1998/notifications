@@ -81,7 +81,7 @@
             text-align: center;
             flex-grow: 1;
             font-size: 16px;
-            margin-left: 210px;
+            margin-left: 200px;
         }
 
         .content {

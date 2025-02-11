@@ -171,20 +171,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('process', [DonetaskController::class, 'process'])->name('donetask.process');
 
 
-        Route::get('/release/{id}', [ReleaseController::class, 'show'])->name('release.pdf');
-
-
-
-        Route::get('/releasedownload/{id}', [ReleaseController::class, 'getDownload'])->name('releasedownload');
-
-        Route::resource('release', ReleaseController::class);
-
-        Route::get('/short/{encodedUrl}', [ReleaseController::class, 'redirectShortUrl']);
-
-
     });
 
+
 });
+Route::get('/release/{id}', [ReleaseController::class, 'show'])->name('release.pdf');
+
+Route::get('/releasedownload/{id}', [ReleaseController::class, 'getDownload'])->name('releasedownload');
+
+Route::resource('release', ReleaseController::class);
+
+Route::get('/short/{encodedUrl}', [ReleaseController::class, 'redirectShortUrl']);
 
 
 require __DIR__ . '/auth.php';

@@ -206,7 +206,11 @@ class ReleaseController extends Controller
             ->select('id', 'firstname', 'lastname', 'middlename')
             ->get();
 
-        $pdf_author = auth()->user()->id;
+
+        if (auth()->user()) {
+
+            $pdf_author = auth()->user()->id;
+        }
 
         $userdocument = UserDocuments::findOrFail($id);
         $author = User::findOrFail($userdocument->user_id);
@@ -214,16 +218,16 @@ class ReleaseController extends Controller
         $documenttype_id = $userdocument->documenttype_id;
         $documenttype = DocumentType::findOrFail($documenttype_id);
 
+
         $existingRelease = Release::where('document_id', $userdocument->id)
-            ->where('user_id', $pdf_author)
+//            ->where('user_id', $pdf_author)
             ->where('documenttype_id', $documenttype_id)
             ->latest()
             ->first();
 
         if ($existingRelease) {
             return $this->getDownload($id);
-        }
-        else {
+        } else {
 
             $fileUrl = route('release.pdf', ['id' => $id]);
             $shortenedUrl = url('/') . '/short/' . urlencode(base64_encode($fileUrl));
@@ -240,7 +244,10 @@ class ReleaseController extends Controller
             file_put_contents($qrCodePath, $qrCode);
 
 
-            $pdf = PDF::loadView('release.userdocument', compact('userdocument', 'users', 'documenttype', 'qrCodePath', 'author'));
+            $pdf = PDF::loadView('release.userdocument', compact('userdocument', 'users', 'documenttype', 'qrCodePath', 'author'))->setPaper('A4', 'portrait')
+                ->setOptions([
+                    'defaultFont' => 'times'
+                ]);
 
             $pdfFileName = hash('sha256', $id . 'hujjat') . '.pdf';
 
@@ -261,7 +268,7 @@ class ReleaseController extends Controller
             if (!$existingRelease) {
                 $releaseDocument = new Release();
                 $releaseDocument->document_id = $userdocument->id;
-                $releaseDocument->user_id = $pdf_author;
+                $releaseDocument->user_id = $pdf_author ?? 0;
                 $releaseDocument->documenttype_id = $documenttype->id;
                 $releaseDocument->file = $pdfFileName;
                 $releaseDocument->qrcode = 'qr-codes/' . $hashedFileName;

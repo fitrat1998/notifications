@@ -6,16 +6,22 @@
     <title>Document</title>
     <style>
 
+        @font-face {
+            font-family: "Times New Roman";
+            src: url("{{ storage_path('times.ttf') }}") format("truetype");
+        }
+
 
         body {
-            font-family: "DejaVu Sans", "Times New Roman"f;
+            font-family: "Times New Roman", serif;
             margin: 0;
             padding: 0;
         }
 
+
         @font-face {
             font-family: "DejaVu Sans";
-            src: url("https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/fonts/dejavu-sans/DejaVuSans.ttf");
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/fonts/dejavu-sans/DejaVuSans.ttf") format("truetype");
         }
 
         .container {
@@ -75,6 +81,7 @@
             flex-grow: 1;
             font-size: 16px;
             margin-left: 175px;
+            font-family: "DejaVu Sans", "Arial Unicode MS", sans-serif, "Times New Roman";
         }
 
         .header .span3 {
@@ -96,16 +103,21 @@
 <div class="container">
 
     <div class="image-container">
-        <img src="{{ public_path('samsu_name.png') }}" alt="Logo">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('samsu_name.png'))) }}"
+             alt="Logo">
     </div>
 
+
     <div class="header">
-        <span class="title">{{ $documenttype->name }}</span>
-{{--        <span class="note">Loyiha</span>--}}
+        <span class="title">BUYRUQ</span>
+        {{--        <span class="note">Loyiha</span>--}}
     </div>
     <div class="header">
-        <span class="span1">{{ $userdocument->created_at->format('d-m-Y') }}</span>
-        <span class="span2">№ {{ $userdocument->id }}</span> <!-- "№-" emas, "№ " qoldiring -->
+        <span class="span1 "><span>{{ $documenttype->name  }}</span><br>{{ $userdocument->created_at->format('d-m-Y') }}</span>
+
+        <span class="span2">&#8470;</span>
+        <span class="span"> {{ $userdocument->id }}</span>
+
         <span class="span3">Samarqand sh.</span>
     </div>
 
@@ -114,20 +126,39 @@
         <p><strong>{!! $userdocument->comment  !!}</p>
 
 
-        <p><strong>Hujjat yaratuvchisi:</strong> {{ $author->position, }}
+        <div class="header">
+            @php
+                $lastUser = $users->last();
+                $remainingUsers = $users->except($users->keys()->last());
+            @endphp
+
+            <span class="span1 "><span>{{ $documenttype->name  }}</span><br>{{ $userdocument->created_at->format('d-m-Y') }}</span>
+
+            <span class="span"> {{ $userdocument->id }}</span>
+
+            <span class="span3">Samarqand sh.</span>
+        </div>
+
+
+        @if($lastUser)
+            {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}
+                . {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}. {{ $lastUser->lastname }}</p>
+        @endif
+
+        <p><strong>Loyiha yaratuvchisi:</strong> {{ $author->position }}
             - {{ strtoupper(substr($author->firstname, 0, 1)) }}
             . {{ strtoupper(substr($author->middlename, 0, 1)) }}. {{ $author->lastname }}</p>
 
-        @foreach($users as $user)
-            <p><strong>Tasdiqladi:</strong> {{ strtoupper(substr($user->firstname, 0, 1)) }}
-                . {{ strtoupper(substr($user->middlename, 0, 1)) }}. {{ $user->lastname }}</p>
+        <p><strong>Tasdiqladi:</strong></p>
+
+        @foreach($remainingUsers as $user)
+            <p>
+                @if($lastUser->id != $user->id)
+                    {{ strtoupper(substr($user->firstname, 0, 1)) }}
+                    . {{ strtoupper(substr($user->middlename, 0, 1)) }}. {{ $user->lastname }}
+                @endif
+            </p>
         @endforeach
-
-
-
-        <div class="d-flex justify-content-end">
-                <img src="{{$qrCodePath}}" alt="QR Code" width="100">
-            </div>
 
 
     </div>
@@ -137,23 +168,3 @@
 
 </body>
 </html>
-
-
-{{-- <div class="container">--}}
-{{--        <div class="content">--}}
-{{--            <p>{!! $userdocument->comment !!}</p>--}}
-{{--            <p><strong>Kim tomonidan yaratilgan:</strong>  {{ strtoupper(substr($author->firstname, 0, 1)) }}. {{ strtoupper(substr($author->middlename, 0, 1)) }}. {{ $author->lastname }}</p>--}}
-
-{{--            @foreach($users as $user)--}}
-{{--                <p><strong>Tasdiqladi:</strong> {{ strtoupper(substr($user->firstname, 0, 1)) }}. {{ strtoupper(substr($user->middlename, 0, 1)) }}. {{ $user->lastname }}</p>--}}
-{{--            @endforeach--}}
-
-{{--            <!-- Sana va QR kodni flexbox yordamida chap tomonda joylashtirish -->--}}
-
-{{--                <p><strong>Yaratilgan sana:</strong> {{ $userdocument->created_at->format('Y-m-d') }}</p>--}}
-{{--        </div>--}}
-
-{{--            <div class="d-flex justify-content-end">--}}
-{{--                <img src="{{$qrCodePath}}" alt="QR Code" width="100">--}}
-{{--            </div>--}}
-{{--    </div>--}}
