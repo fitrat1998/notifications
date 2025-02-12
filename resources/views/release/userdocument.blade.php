@@ -150,9 +150,10 @@
 
 
         @php
-            $lastUser = $users->last();
+            $lastUser = (object) $users->last(); // Massivni obyektga o‘girish
             $remainingUsers = $users->except($users->keys()->last());
         @endphp
+
         <div class="header d-flex justify-content-between align-items-center">
             <span class="span5">{{ $lastUser->position ?? 'Rektor' }}</span>
 
@@ -161,28 +162,34 @@
         <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code" width="100">
     </span>
 
+
             <span class="span7">
-        @if($lastUser)
-                    {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}.
-                    {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}. {{ $lastUser->lastname }}
+       @if($lastUser)
+                    {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}
+                    .{{ strtoupper(substr($lastUser->middlename, 0, 1)) }}.{{ $lastUser->lastname }}
                 @endif
+
     </span>
         </div>
 
 
-        <p><strong>Loyiha yaratuvchisi:</strong> {{ $author->position }}
+        <p style="margin-top: 50px;"><strong>Loyiha yaratuvchisi:</strong> {{ $author->position }}
             - {{ strtoupper(substr($author->firstname, 0, 1)) }}
             . {{ strtoupper(substr($author->middlename, 0, 1)) }}. {{ $author->lastname }}</p>
 
         <p><strong>Tasdiqladi:</strong></p>
 
         @foreach($remainingUsers as $user)
-            <p>
-                @if($lastUser->id != $user->id)
-                    {{ strtoupper(substr($user->firstname, 0, 1)) }}
-                    . {{ strtoupper(substr($user->middlename, 0, 1)) }}. {{ $user->lastname }}
-                @endif
-            </p>
+            @if(isset($lastUser) && $lastUser->id != $user->id)
+
+                <p>
+                    {{ htmlspecialchars($user->position, ENT_QUOTES, 'UTF-8') }} (kelishildi) -
+                    {{ strtoupper(substr(htmlspecialchars($user->firstname, ENT_QUOTES, 'UTF-8'), 0, 1)) }}.
+                    {{ strtoupper(substr(htmlspecialchars($user->middlename, ENT_QUOTES, 'UTF-8'), 0, 1)) }}.
+                    {{ htmlspecialchars($user->lastname, ENT_QUOTES, 'UTF-8') }}
+                </p>
+
+            @endif
         @endforeach
 
 

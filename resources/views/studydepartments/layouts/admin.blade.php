@@ -64,8 +64,8 @@
             flex: 1;
         }
 
-        .dt-scroll-head{
-                display: none;
+        .dt-scroll-head {
+            display: none;
         }
 
 
@@ -172,6 +172,7 @@
             height: 0 !important;
             overflow: hidden !important;
         }
+
 
 
     </style>
@@ -348,7 +349,7 @@
         });
     });
 
-     table = new DataTable('#dataTabledoc');
+    table = new DataTable('#dataTabledoc');
 
 
     duallist = $('.duallistbox').bootstrapDualListbox();
@@ -419,8 +420,19 @@
             'bold italic backcolor | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | ' +
             'removeformat | help',
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }',
+        menubar: 'table',
+        setup: function (editor) {
+            editor.on('PostProcess', function (e) {
+                if (e.content.includes('<table')) {
+                    e.content = e.content.replace(/<table/g, '<div class="table-responsive"><table');
+                    e.content = e.content.replace(/<\/table>/g, '</table></div>');
+                }
+            });
+        }
     });
+
+
 </script>
 </body>
 </html>

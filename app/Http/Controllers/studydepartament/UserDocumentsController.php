@@ -202,7 +202,10 @@ class UserDocumentsController extends Controller
             'users' => $users ?? null,
             'documenttype' => $documenttype ?? null
         ])
-            ->setPaper('A4', 'portrait');
+            ->setPaper('A4', 'portrait') // A4 format
+            ->setOption('isHtml5ParserEnabled', true) // Jadval to‘g‘ri chiqishi uchun
+            ->setOption('isPhpEnabled', true)
+            ->setOption('defaultFont', 'Times New Roman'); // Standart font
 
         // ✅ Unicode shriftni ishlatish (Foydalanuvchi ma'lumotlari uchun to‘g‘ri ko‘rinadi)
         $pdf->getDomPDF()->set_option("defaultFont", "dejavu sans");
