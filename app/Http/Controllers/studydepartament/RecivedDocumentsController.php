@@ -66,13 +66,9 @@ class RecivedDocumentsController extends Controller
             ->pluck('userdocs_id');
 
         $user_documents = UserDocuments::whereIn('id', $user_documents_id)
+            ->orderBy('id', 'desc')
             ->get();
 
-
-        $user_documents = UserDocuments::whereIn('id', $user_documents_id)
-            ->get();
-
-//        dd($user_documents);
 
 
         return view('studydepartments.reciveddocuments.index', compact('count', 'count_docs', 'user_documents'));

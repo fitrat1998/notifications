@@ -285,8 +285,7 @@ class UserDocuments extends Model
         if (is_null($final)) {
             return 0;
 
-        }
-            else {
+        } else {
             return $final;
         }
 
@@ -299,12 +298,17 @@ class UserDocuments extends Model
 
         if (!$download) {
             return null;
-        }
-        else {
-        return $download->document_id;
+        } else {
+            return $download->document_id;
 
         }
 
+    }
+
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 

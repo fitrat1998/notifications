@@ -4,6 +4,7 @@ namespace App\Models\studydepartament;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 
 class RecivedDocuments extends Model
 {
@@ -19,4 +20,8 @@ class RecivedDocuments extends Model
             'step',
             'report'
         ];
+
+
+
+
 }

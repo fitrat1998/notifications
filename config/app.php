@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'uz',
 
     /*
     |--------------------------------------------------------------------------
@@ -188,5 +188,8 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ])->toArray(),
+
+    'charset' => 'UTF-8',
+
 
 ];

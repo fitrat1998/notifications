@@ -195,7 +195,7 @@
                 <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                    class="nav-link dropdown-toggle">
                     @if(auth()->user())
-                        <span class="btn btn-success"><i class="fas fa-user"></i> {{ auth()->user()->firstname}}</span>
+                        <span class="btn btn-success"><i class="fas fa-user"></i> {{ auth()->user()->firstname }} {{ auth()->user()->lastname }} - ({{ auth()->user()->position }})</span>
                     @endif
                 </a>
                 <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
@@ -240,7 +240,7 @@
                     <img src="{{ asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Admin</a>
+                    <a href="#" class="d-block">{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</a>
                 </div>
             </div>
 
@@ -349,6 +349,8 @@
         });
     });
 
+
+
     table = new DataTable('#dataTabledoc');
 
 
@@ -368,6 +370,12 @@
         });
     </script>
 @endif
+
+<script>
+    $(document).ready(function(){
+        $('table').dataTable();
+    });
+</script>
 
 {{--<script>--}}
 {{--    document.addEventListener("DOMContentLoaded", function (event) {--}}

@@ -14,7 +14,7 @@
 
         body {
             font-family: "Times New Roman", serif;
-            margin: 0 auto;
+            margin: 0;
             padding: 0;
         }
 
@@ -26,8 +26,8 @@
 
         .container {
             width: 100%;
+            max-width: 1140px;
             margin: 0 auto;
-            max-width: 1300px;
             padding: 15px;
         }
 
@@ -119,41 +119,11 @@
             line-height: 1.5;
         }
 
-        .table-responsive {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    overflow-x: auto;
-}
-
-.table-responsive table {
-    width: 100%;
-    max-width: 900px; /* A4 formatga mos */
-    border-collapse: collapse;
-    table-layout: fixed;
-    margin: 0 auto;
-    page-break-inside: auto; /* Jadval o‘zidan o‘zi sahifalanadi */
-}
-
-.table-responsive th,
-.table-responsive td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-    word-break: break-word;
-}
-
-@media print {
-    .table-responsive table {
-        page-break-inside: auto; /* Sahifa bo‘sh qolmasin */
-    }
-
-    .table-container {
-        page-break-before: auto; /* Har safar yangi sahifa bo‘lmasligi uchun */
-        page-break-after: auto;
-    }
-}
+        .header-rector {
+            margin-bottom: 15px;
+            margin-top: 45px;
+            page-break-inside: avoid; /* Sahifa bo‘ylab bo‘linmasligi uchun */
+        }
 
 
     </style>
@@ -170,7 +140,7 @@
 
     <div class="header">
         <span class="title">BUYRUQ</span>
-        <span class="note">Loyiha</span>
+                <span class="note">Loyiha</span>
     </div>
     <div class="header">
         <span class="span1 "><span>{{ $documenttype->name  }}</span><br>{{ $userdocument->created_at->format('d-m-Y') }}</span>
@@ -181,52 +151,54 @@
         <span class="span3">Samarqand sh.</span>
     </div>
 
-    <div class="a4-container">
-    <div class="table-responsive">
-        <div class="table-container">
-            {!! $userdocument->comment !!}
-        </div>
-    </div>
-</div>
-
 
     <div class="content">
+        <p><strong>{!! $userdocument->comment  !!}</p>
 
 
         @php
-            $lastUser = $users->last();
+            $lastUser = (object) $users->last(); // Massivni obyektga o‘girish
             $remainingUsers = $users->except($users->keys()->last());
         @endphp
-        <div class="header d-flex justify-content-between align-items-center">
+
+        <div class="header d-flex justify-content-between align-items-center"
+             style="margin-bottom: 15px; margin-top: 45px; page-break-inside: avoid;">
             <span class="span5">{{ $lastUser->position ?? 'Rektor' }}</span>
 
-
             <span class="span6 d-flex justify-content-center">
-    {{--        <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code" width="100">--}}
-        </span>
+{{--                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code"--}}
+{{--                         width="100">--}}
+            </span>
 
             <span class="span7">
-            @if($lastUser)
+                @if($lastUser)
                     {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}.
-                    {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}. {{ $lastUser->lastname }}
+                    {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}.
+                    {{ $lastUser->lastname }}
                 @endif
-        </span>
+            </span>
         </div>
 
 
-        <p><strong>Loyiha yaratuvchisi:</strong> {{ $author->position }}
+        <p style="margin-top: 50px;"><strong>Loyiha yaratuvchisi:</strong><br> {{ $author->position }}
             - {{ strtoupper(substr($author->firstname, 0, 1)) }}
             . {{ strtoupper(substr($author->middlename, 0, 1)) }}. {{ $author->lastname }}</p>
 
         <p><strong>Tasdiqladi:</strong></p>
 
+        {{--        {{ dd($remainingUsers) }}--}}
+
         @foreach($remainingUsers as $user)
-            <p>
-                @if($lastUser->id != $user->id)
-                    {{ strtoupper(substr($user->firstname, 0, 1)) }}
-                    . {{ strtoupper(substr($user->middlename, 0, 1)) }}. {{ $user->lastname }}
-                @endif
-            </p>
+            @if(isset($lastUser) && $lastUser->id != $user->id)
+                <p>
+                    {{ str_replace('?', "'", $user->position) }} (kelishildi) -
+                    {{ strtoupper(substr(str_replace('?', "'", $user->firstname), 0, 1)) }}
+                    .{{ strtoupper(substr(str_replace('?', "'", $user->middlename), 0, 1)) }}
+                    .{{ str_replace('?', "'", $user->lastname) }}
+                </p>
+
+
+            @endif
         @endforeach
 
 
@@ -235,8 +207,5 @@
 
 </div>
 
-<script>
-
-</script>
 </body>
 </html>

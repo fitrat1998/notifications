@@ -124,10 +124,16 @@
                                                 <a href="#" class="btn btn-primary btn-sm m-1">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('userdocuments.destroy',$document->id) }}"  method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn-sm m-1" onclick="if (confirm('Вы уверены?')) { this.form.submit() } ">
+                                                {{--<form action = "{{ route('userdocuments.destroy',$document->id) }}"  method = "post">--}}
+                                                {{--@csrf--}}
+                                                {{--@method('DELETE')--}}
+                                                {{--<button type = "button" class = "btn btn-danger btn-sm m-1" onclick = "if (confirm('Вы уверены?')) { this.form.submit() } ">--}}
+                                                {{--<i class = "fa fa-trash"></i>--}}
+                                                {{--</button>--}}
+                                                {{--</form>--}}
+                                                <form action="" method="post">
+
+                                                    <button type="button" class="btn btn-danger btn-sm m-1">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>

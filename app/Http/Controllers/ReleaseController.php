@@ -93,21 +93,25 @@ class ReleaseController extends Controller
             $users = $users->map(function ($user) {
                 return (object)[
                     'id' => $user->id,
-                    'position' => mb_convert_encoding($user->position, 'UTF-8', 'auto'),
-                    'firstname' => mb_convert_encoding($user->firstname, 'UTF-8', 'auto'),
-                    'middlename' => mb_convert_encoding($user->middlename, 'UTF-8', 'auto'),
-                    'lastname' => mb_convert_encoding($user->lastname, 'UTF-8', 'auto'),
+                    'position' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->position, 'UTF-8', 'auto')),
+                    'firstname' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->firstname, 'UTF-8', 'auto')),
+                    'middlename' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->middlename, 'UTF-8', 'auto')),
+                    'lastname' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->lastname, 'UTF-8', 'auto')),
                 ];
             });
 
 
-            $pdf = PDF::loadView('release.userdocument', compact('userdocument', 'users', 'documenttype', 'qrCodePath', 'author'))->setPaper('A4', 'portrait')
+            $pdf = PDF::loadView('release.userdocument', compact('userdocument', 'users', 'documenttype', 'qrCodePath', 'author'))
+                ->setPaper('A4', 'portrait')
                 ->setOptions([
-                    'defaultFont' => 'times'
+                    'defaultFont' => 'Times New Roman' // Shu yerni o'zgartiramiz
                 ]);
 
+            $pdf->getDomPDF()->set_option('defaultFont', 'Times New Roman');
+
+
             $pdf->setPaper('A4', 'portrait');
-            $pdf->getDomPDF()->set_option('defaultFont', 'DejaVu Sans');
+//            $pdf->getDomPDF()->set_option('defaultFont', 'DejaVu Sans');
 
             $pdfFileName = hash('sha256', $id . 'hujjat') . '.pdf';
 

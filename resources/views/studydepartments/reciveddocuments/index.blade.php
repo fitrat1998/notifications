@@ -20,220 +20,448 @@
 
     <!-- Main content -->
     <section class="content">
+
+        <!-- ./row -->
         <div class="row">
-            <div class="col-12">
-                <div class="card">
-
-                    <div class="card-header">
-                        @can('reciveddocuments.create')
-                        @endcan
+            <div class="col-12 col-sm-12">
+                <div class="card  card-tabs">
+                    <div class="card-header p-0 ">
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link m-2 p-2 active" id="custom-tabs-one-home-tab" data-toggle="pill"
+                                   href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home"
+                                   aria-selected="true" style="background-color: #007bff; color: white;">Barcha kirim
+                                    hujjatlari</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link m-2 p-2" id="custom-tabs-one-profile-tab" data-toggle="pill"
+                                   href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile"
+                                   aria-selected="false" style="background-color: #28a745; color: white;">Qabul qilingan
+                                    hujjatlar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link m-2 p-2" id="custom-tabs-one-messages-tab" data-toggle="pill"
+                                   href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages"
+                                   aria-selected="false" style="background-color: #ffc107; color: black;">Yangi kelib
+                                    tushgan hujjatlar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link m-2 p-2" id="custom-tabs-one-settings-tab" data-toggle="pill"
+                                   href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings"
+                                   aria-selected="false" style="background-color: #dc3545; color: white;">Rad etilgan
+                                    hujjatlar</a>
+                            </li>
+                        </ul>
                     </div>
-                    <!-- /.card-header -->
                     <div class="card-body">
-                        <!-- Data table -->
-                        <table id="dataTable"
+                        <div class="tab-content" id="custom-tabs-one-tabContent">
 
-                        <table id="dataTabledoc"
+                            <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel"
+                                 aria-labelledby="custom-tabs-one-home-tab">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <!-- Bu div jadvalni to‘liq moslashuvchan qiladi -->
+                                            <table id="dataTable"
+                                                   class="table table-bordered table-striped dataTable dtr-inline"
+                                                   user="grid" aria-describedby="dataTable_info">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Hujjat nomi</th>
+                                                    <th>Kim tomonidan yaratilgan</th>
+                                                    <th>Status</th>
+                                                    <th>Yaratilgan sanasi</th>
+                                                    <th>Buyruq chiqarish</th>
+                                                    <th>Amallar</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($user_documents as $userdoc)
+                                                    @php
+                                                        $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
+                                                        $previous = $userdoc->pre($userdoc->id, $status->id);
+                                                    @endphp
 
-                               class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg"
-                               user="grid" aria-describedby="dataTable_info">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Hujjat nomi</th>
-                                <th>Status</th>
-                                {{--                                <th>Ilova qo'shish</th>--}}
-                                <th>Buyruq chiqarish</th>
-                                <th>Amallar</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            @foreach($user_documents as $userdoc)
-
-                                @php
-                                    $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
-                                    $previous = $userdoc->pre($userdoc->id, $status->id);
-                                @endphp
-                                @if($userdoc->show($status->id,$userdoc->id))
-
-                                    <tr>
-                                        <td>{{ $userdoc->id }}</td>
-                                        <td class="w-25">{{ $userdoc->documenttype->name }}</td>
-                                        <td>
-                                            @if($status->status == 'accepted')
-                                                <span class="btn btn-success">Qabul qilingan</span>
-                                            @elseif($status->status == 'waiting')
-                                                <span class="btn btn-warning">Kutilmoqda</span>
-                                            @else
-                                                <span class="btn btn-danger">{{ $status->status }}</span>
-                                            @endif
-                                        </td>
-
-                                        {{--                                        <td>--}}
-                                        {{--                                            @if($userdoc->finish_doc($userdoc->id))--}}
-                                        {{--                                                @if($userdoc->final_step_status($userdoc->id))--}}
-                                        {{--                                                    <a class="btn btn-primary"--}}
-                                        {{--                                                       href="{{ route('final_steps.show',$userdoc->final_step_status($userdoc->id)->id) }}">Ilovani--}}
-                                        {{--                                                        ko`rish</a>--}}
-                                        {{--                                                @else--}}
-                                        {{--                                                    <button type="button" class="btn btn-primary" data-toggle="modal"--}}
-                                        {{--                                                            data-target="#modal-lg">--}}
-                                        {{--                                                        Buyruq chiqarish--}}
-                                        {{--                                                    </button>--}}
-
-                                        {{--                                                    <div class="modal fade" id="modal-lg">--}}
-                                        {{--                                                        <div class="modal-dialog modal-lg">--}}
-                                        {{--                                                            <div class="modal-content">--}}
-                                        {{--                                                                <div class="modal-header">--}}
-                                        {{--                                                                    <h4 class="modal-title">Ilova qilish</h4>--}}
-                                        {{--                                                                    <button type="button" class="close"--}}
-                                        {{--                                                                            data-dismiss="modal"--}}
-                                        {{--                                                                            aria-label="Close">--}}
-                                        {{--                                                                        <span aria-hidden="true">&times;</span>--}}
-                                        {{--                                                                    </button>--}}
-                                        {{--                                                                </div>--}}
-
-                                        {{--                                                                <div class="modal-body">--}}
-                                        {{--                                                                    <form--}}
-                                        {{--                                                                        action="{{ route('final_steps.store') }}"--}}
-                                        {{--                                                                        method="POST" enctype="multipart/form-data">--}}
-                                        {{--                                                                        @csrf--}}
-                                        {{--                                                                        <div class="card-body ">--}}
-
-                                        {{--                                                                            <div class="form-group m-4">--}}
-                                        {{--                                                                                <label>Hujjat nomi</label>--}}
-                                        {{--                                                                                <input type="hidden"--}}
-                                        {{--                                                                                       value="{{ $userdoc->id }}"--}}
-                                        {{--                                                                                       name="userdoc_id">--}}
-
-                                        {{--                                                                                <input type="hidden"--}}
-                                        {{--                                                                                       value="{{ auth()->user()->department_id }}"--}}
-                                        {{--                                                                                       name="department_id">--}}
-
-                                        {{--                                                                                <input type="hidden"--}}
-                                        {{--                                                                                       class="form-control"--}}
-                                        {{--                                                                                       name="doctype_id"--}}
-                                        {{--                                                                                       value=" {{ $userdoc->userdoc($userdoc->documenttype_id)->id }}">--}}
-
-                                        {{--                                                                                <input type="text" class="form-control"--}}
-                                        {{--                                                                                       name="doctype_name"--}}
-                                        {{--                                                                                       value=" {{ $userdoc->userdoc($userdoc->documenttype_id)->name }}"--}}
-                                        {{--                                                                                       disabled>--}}
-
-                                        {{--                                                                                @error('task_id')--}}
-                                        {{--                                                                                <div--}}
-                                        {{--                                                                                    class="text-danger">{{ $message }}</div>--}}
-                                        {{--                                                                                @enderror--}}
-                                        {{--                                                                            </div>--}}
-
-                                        {{--                                                                            <div class="form-group m-4 ">--}}
-                                        {{--                                                                                <label for="">Izoh</label>--}}
-                                        {{--                                                                                <textarea name="comment"--}}
-                                        {{--                                                                                          id="editor">{{ old('comment') }}</textarea>--}}
-                                        {{--                                                                                @error('comment')--}}
-                                        {{--                                                                                <div--}}
-                                        {{--                                                                                    class="text-danger">{{ $message }}</div>--}}
-                                        {{--                                                                                @enderror--}}
-                                        {{--                                                                            </div>--}}
-
-                                        {{--                                                                            <div class="form-group m-4">--}}
-                                        {{--                                                                                <label for="file">Fayl</label>--}}
-                                        {{--                                                                                <input type="file"--}}
-                                        {{--                                                                                       class="form-control m-1"--}}
-                                        {{--                                                                                       name="files[]" id="file"--}}
-                                        {{--                                                                                       placeholder="fayl" multiple>--}}
-                                        {{--                                                                                @if($errors->any())--}}
-                                        {{--                                                                                    {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}--}}
-                                        {{--                                                                                @endif--}}
-                                        {{--                                                                            </div>--}}
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $userdoc->documenttype->name }}</td>
+                                                        <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
+                                                            - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
+                                                        <td>
+                                                            @if($status->status == 'accepted')
+                                                                <span
+                                                                    class="btn btn-success">Qabul qilingan</span>
+                                                            @elseif($status->status == 'waiting')
+                                                                <span class="btn btn-warning">Kutilmoqda</span>
+                                                            @else
+                                                                <span
+                                                                    class="btn btn-danger">{{ $status->status }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if($userdoc->finish_doc($userdoc->id))
+                                                                <a href="{{ route('release.show', ['release' => $userdoc->id]) }}"
+                                                                   class="btn btn-primary">
+                                                                    Buyruq chiqarish
+                                                                </a>
+                                                            @else
+                                                                Kutilmoqda
+                                                            @endif
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <form
+                                                                action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <div class="btn-category">
+                                                                    <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
+                                                                       class="btn btn-primary btn-sm"
+                                                                       title="Batafsil">
+                                                                        <i class="fa-solid fa-circle-info"></i>
+                                                                    </a>
+                                                                    @if($userdoc->checkdone($userdoc->id) == 'done')
+                                                                        <a href="{{ route('doneuserdocs.view', $userdoc->id) }}"
+                                                                           class="btn btn-primary btn-sm"
+                                                                           title="Tasdiqlangan hujjatni ko'rish">
+                                                                            <i class="fa-solid fa-eye"></i>
+                                                                        </a>
+                                                                    @elseif($userdoc->checkdone($userdoc->id) == 'cancel')
+                                                                        <a href=""
+                                                                           class="btn btn-danger btn-sm">
+                                                                            <i class="fa-solid fa-xmark"></i>
+                                                                        </a>
+                                                                    @else
+                                                                        <a href="{{ route('reciveddocuments.show', $userdoc->id) }}"
+                                                                           class="btn btn-success btn-sm"
+                                                                           title="Hujjatni qabul qilish">
+                                                                            <i class="fa-solid fa-square-check"></i>
+                                                                        </a>
+                                                                        <a href="{{ route('reciveddocuments.reject', $userdoc->id) }}"
+                                                                           class="btn btn-danger btn-sm">
+                                                                            <i class="fa-solid fa-ban"
+                                                                               title="Hujjatni rad qilish"></i>
+                                                                        </a>
+                                                                    @endif
+                                                                </div>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
 
 
-                                        {{--                                                                            <div class="card-footer">--}}
-                                        {{--                                                                                <button type="submit"--}}
-                                        {{--                                                                                        class="btn btn-primary">--}}
-                                        {{--                                                                                    Jo`natish--}}
-                                        {{--                                                                                </button>--}}
-                                        {{--                                                                            </div>--}}
-                                        {{--                                                                    </form>--}}
-                                        {{--                                                                </div>--}}
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div> <!-- /.table-responsive -->
+                                    </div> <!-- /.card-body -->
+                                </div> <!-- /.card -->
+                            </div>
 
+                            <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel"
+                                 aria-labelledby="custom-tabs-one-profile-tab">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <!-- Bu div jadvalni to‘liq moslashuvchan qiladi -->
+                                            <table id="dataTable"
+                                                   class="table table-bordered table-striped dataTable dtr-inline"
+                                                   user="grid" aria-describedby="dataTable_info">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Hujjat nomi</th>
+                                                    <th>Kim tomonidan yaratilgan</th>
+                                                    <th>Status</th>
+                                                    <th>Yaratilgan sanasi</th>
+                                                    <th>Buyruq chiqarish</th>
+                                                    <th>Amallar</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @php
+                                                    $i = 0;
+                                                @endphp
+                                                @foreach($user_documents as $userdoc)
 
-                                        {{--                                                            </div>--}}
+                                                    @if($userdoc->status == 'accepted')
 
-                                        {{--                                                        </div>--}}
+                                                        @php
+                                                            $i++;
+                                                                $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
+                                                                $previous = $userdoc->pre($userdoc->id, $status->id);
+                                                        @endphp
+                                                        @if($userdoc->show($status->id,$userdoc->id))
+                                                            <tr>
+                                                                <td>{{ $i }}</td>
+                                                                <td>{{ $userdoc->documenttype->name }}</td>
+                                                                <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
+                                                                    - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
+                                                                <td>
+                                                                    @if($status->status == 'accepted')
+                                                                        <span
+                                                                            class="btn btn-success">Qabul qilingan</span>
+                                                                    @elseif($status->status == 'waiting')
+                                                                        <span class="btn btn-warning">Kutilmoqda</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="btn btn-danger">{{ $status->status }}</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    {{ $userdoc->created_at->format('d.m.Y') }}
+                                                                </td>
 
-                                        {{--                                                    </div>--}}
-                                        {{--                                                @endif--}}
-                                        {{--                                            @else--}}
-                                        {{--                                                mavjud emas--}}
-                                        {{--                                            @endif--}}
-                                        {{--                                        </td>--}}
-
-                                        <td>
-                                            @if($userdoc->finish_doc($userdoc->id))
-                                                <a href="{{ route('release.show', ['release' => $userdoc->id]) }}"
-                                                   class="btn btn-primary">
-                                                    Buyruq chiqarish
-                                                </a>
-                                            @else
-                                                Kutilmoqda
-
-                                            @endif
-
-                                        </td>
-
-
-                                        <td class="text-center w-25">
-                                            @can('reciveddocuments')
-                                            @endcan
-
-                                            <form action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
-                                                  method="post">
-                                                @csrf
-
-                                                <div class="btn-category">
-                                                    <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
-                                                       class="btn btn-primary btn-sm" title="Batafsil"> <i
-                                                            class="fa-solid fa-circle-info"></i></a>
-
-                                                    @if($userdoc->checkdone($userdoc->id) == 'done')
-                                                        <a href="{{ route('doneuserdocs.view', $userdoc->id) }}"
-                                                           class="btn btn-primary btn-sm"
-                                                           title="Tasdiqlangan hujjatni ko'rish"><i
-                                                                class="fa-solid fa-eye"></i></a>
-                                                    @elseif($userdoc->checkdone($userdoc->id) == 'cancel')
-                                                        <a href="" class="btn btn-danger btn-sm">
-                                                            <i class="fa-solid fa-xmark"></i>
-                                                        </a>
-                                                    @else
-                                                        <a href="{{ route('reciveddocuments.show', $userdoc->id) }}"
-                                                           class="btn btn-success btn-sm" title="Hujjatni qabul qilish"><i
-                                                                class="fa-solid fa-square-check"></i></a>
-
-                                                        <a href="{{ route('reciveddocuments.reject', $userdoc->id) }}"
-                                                           class="btn btn-danger btn-sm">
-                                                            <i class="fa-solid fa-ban" title="Hujjatni rad qilish"></i>
-                                                        </a>
+                                                                <td>
+                                                                    @if($userdoc->finish_doc($userdoc->id))
+                                                                        <a href="{{ route('release.show', ['release' => $userdoc->id]) }}"
+                                                                           class="btn btn-primary">
+                                                                            Buyruq chiqarish
+                                                                        </a>
+                                                                    @else
+                                                                        Kutilmoqda
+                                                                    @endif
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <form
+                                                                        action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        <div class="btn-category">
+                                                                            <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
+                                                                               class="btn btn-primary btn-sm"
+                                                                               title="Batafsil">
+                                                                                <i class="fa-solid fa-circle-info"></i>
+                                                                            </a>
+                                                                            @if($userdoc->checkdone($userdoc->id) == 'done')
+                                                                                <a href="{{ route('doneuserdocs.view', $userdoc->id) }}"
+                                                                                   class="btn btn-primary btn-sm"
+                                                                                   title="Tasdiqlangan hujjatni ko'rish">
+                                                                                    <i class="fa-solid fa-eye"></i>
+                                                                                </a>
+                                                                            @elseif($userdoc->checkdone($userdoc->id) == 'cancel')
+                                                                                <a href=""
+                                                                                   class="btn btn-danger btn-sm">
+                                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                                </a>
+                                                                            @else
+                                                                                <a href="{{ route('reciveddocuments.show', $userdoc->id) }}"
+                                                                                   class="btn btn-success btn-sm"
+                                                                                   title="Hujjatni qabul qilish">
+                                                                                    <i class="fa-solid fa-square-check"></i>
+                                                                                </a>
+                                                                                <a href="{{ route('reciveddocuments.reject', $userdoc->id) }}"
+                                                                                   class="btn btn-danger btn-sm">
+                                                                                    <i class="fa-solid fa-ban"
+                                                                                       title="Hujjatni rad qilish"></i>
+                                                                                </a>
+                                                                            @endif
+                                                                        </div>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
                                                     @endif
-                                                </div>
-                                            </form>
-                                        </td>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div> <!-- /.table-responsive -->
+                                    </div> <!-- /.card-body -->
+                                </div> <!-- /.card -->
+                            </div>
 
-                                    </tr>
-                                @endif
-                            @endforeach
 
-                            </tbody>
-                        </table>
+                            <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel"
+                                 aria-labelledby="custom-tabs-one-messages-tab">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <!-- Bu div jadvalni to‘liq moslashuvchan qiladi -->
+                                            <table id="dataTable"
+                                                   class="table table-bordered table-striped dataTable dtr-inline"
+                                                   user="grid" aria-describedby="dataTable_info">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Hujjat nomi</th>
+                                                    <th>Kim tomonidan yaratilgan</th>
+                                                    <th>Status</th>
+                                                    <th>Yaratilgan sanasi</th>
+                                                    <th>Buyruq chiqarish</th>
+                                                    <th>Amallar</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @php
+                                                    $i = 0;
+                                                @endphp
+                                                @foreach($user_documents as $userdoc)
+                                                    @if($userdoc->status == 'waiting')
+
+                                                        @php
+                                                            $i++;
+                                                                $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
+                                                                $previous = $userdoc->pre($userdoc->id, $status->id);
+                                                        @endphp
+                                                        @if($userdoc->show($status->id,$userdoc->id))
+                                                            <tr>
+                                                                <td>{{ $i}}</td>
+                                                                <td>{{ $userdoc->documenttype->name }}</td>
+                                                                <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
+                                                                    - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
+                                                                <td>
+                                                                    @if($status->status == 'accepted')
+                                                                        <span
+                                                                            class="btn btn-success">Qabul qilingan</span>
+                                                                    @elseif($status->status == 'waiting')
+                                                                        <span class="btn btn-warning">Kutilmoqda</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="btn btn-danger">{{ $status->status }}</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    {{ $userdoc->created_at->format('d.m.Y') }}
+                                                                </td>
+                                                                <td>
+                                                                    @if($userdoc->finish_doc($userdoc->id))
+                                                                        <a href="{{ route('release.show', ['release' => $userdoc->id]) }}"
+                                                                           class="btn btn-primary">
+                                                                            Buyruq chiqarish
+                                                                        </a>
+                                                                    @else
+                                                                        Kutilmoqda
+                                                                    @endif
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <form
+                                                                        action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        <div class="btn-category">
+                                                                            <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
+                                                                               class="btn btn-primary btn-sm"
+                                                                               title="Batafsil">
+                                                                                <i class="fa-solid fa-circle-info"></i>
+                                                                            </a>
+                                                                            @if($userdoc->checkdone($userdoc->id) == 'done')
+                                                                                <a href="{{ route('doneuserdocs.view', $userdoc->id) }}"
+                                                                                   class="btn btn-primary btn-sm"
+                                                                                   title="Tasdiqlangan hujjatni ko'rish">
+                                                                                    <i class="fa-solid fa-eye"></i>
+                                                                                </a>
+                                                                            @elseif($userdoc->checkdone($userdoc->id) == 'cancel')
+                                                                                <a href=""
+                                                                                   class="btn btn-danger btn-sm">
+                                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                                </a>
+                                                                            @else
+                                                                                <a href="{{ route('reciveddocuments.show', $userdoc->id) }}"
+                                                                                   class="btn btn-success btn-sm"
+                                                                                   title="Hujjatni qabul qilish">
+                                                                                    <i class="fa-solid fa-square-check"></i>
+                                                                                </a>
+                                                                                <a href="{{ route('reciveddocuments.reject', $userdoc->id) }}"
+                                                                                   class="btn btn-danger btn-sm">
+                                                                                    <i class="fa-solid fa-ban"
+                                                                                       title="Hujjatni rad qilish"></i>
+                                                                                </a>
+                                                                            @endif
+                                                                        </div>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div> <!-- /.table-responsive -->
+                                    </div> <!-- /.card-body -->
+                                </div> <!-- /.card -->
+                            </div>
+
+                            <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel"
+                                 aria-labelledby="custom-tabs-one-settings-tab">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <!-- Bu div jadvalni to‘liq moslashuvchan qiladi -->
+                                            <table id="dataTable"
+                                                   class="table table-bordered table-striped dataTable dtr-inline"
+                                                   user="grid" aria-describedby="dataTable_info">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Hujjat nomi</th>
+                                                    <th>Kim tomonidan yaratilgan</th>
+                                                    <th>Status</th>
+                                                    <th>Yaratilgan sanasi</th>
+                                                    <th>Buyruq chiqarish</th>
+                                                    <th>Amallar</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @php
+                                                    $i = 0;
+                                                @endphp
+                                                {{--                                                {{ dd($user_documents) }}--}}
+                                                @foreach($user_documents as $userdoc)
+                                                    @if($userdoc->status == 'cancelled')
+
+                                                        @php
+                                                            $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
+                                                            $previous = $userdoc->pre($userdoc->id, $status->id);
+
+                                                        @endphp
+                                                        <tr>
+                                                            <td>{{ $i }}</td>
+                                                            <td>{{ $userdoc->documenttype->name }}</td>
+                                                            <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
+                                                                - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
+                                                            <td>
+                                                                @if($status->status == 'accepted')
+                                                                    <span
+                                                                        class="btn btn-success">Qabul qilingan</span>
+                                                                @elseif($status->status == 'waiting')
+                                                                    <span class="btn btn-warning">Kutilmoqda</span>
+                                                                @else
+                                                                    <span
+                                                                        class="btn btn-danger">{{ $status->status }}</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if($userdoc->finish_doc($userdoc->id))
+                                                                    <a href="{{ route('release.show', ['release' => $userdoc->id]) }}"
+                                                                       class="btn btn-primary">
+                                                                        Buyruq chiqarish
+                                                                    </a>
+                                                                @else
+                                                                    Kutilmoqda
+                                                                @endif
+                                                            </td>
+                                                            <td class="text-center">
+                                                                mavjud emas
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div> <!-- /.table-responsive -->
+                                    </div> <!-- /.card-body -->
+                                </div> <!-- /.card -->
+
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.card-body -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.card -->
             </div>
-            <!-- /.col -->
-        </div>
-        <!-- /.row -->
+
+
+            <!-- /.row -->
     </section>
     <!-- /.content -->
 @endsection

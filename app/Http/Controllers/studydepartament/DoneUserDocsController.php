@@ -62,6 +62,8 @@ class DoneUserDocsController extends Controller
             return redirect()->back()->with('danger', 'Bu malumotlar allaqachon mavjud');
 
         } else {
+
+
             if ($request->file('files')) {
                 $create = DoneUserDocs::create([
                     'user_id' => $user->id,
@@ -98,6 +100,11 @@ class DoneUserDocsController extends Controller
                         'updated_at' => NOW()
                     ]);
                 }
+
+                $userdocs->update([
+                    'status' => 'accepted',
+                ]);
+
             } else {
                 $create = DoneUserDocs::create([
                     'user_id' => $user->id,
@@ -117,6 +124,10 @@ class DoneUserDocsController extends Controller
                         'created_at' => NOW(),
                         'updated_at' => NOW()
                     ]);
+
+                $userdocs->update([
+                    'status' => 'accepted',
+                ]);
             }
 
         }

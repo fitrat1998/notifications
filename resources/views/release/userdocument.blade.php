@@ -119,6 +119,13 @@
             line-height: 1.5;
         }
 
+        .header-rector {
+            margin-bottom: 15px;
+            margin-top: 45px;
+            page-break-inside: avoid; /* Sahifa bo‘ylab bo‘linmasligi uchun */
+        }
+
+
     </style>
 </head>
 <body>
@@ -154,40 +161,42 @@
             $remainingUsers = $users->except($users->keys()->last());
         @endphp
 
-        <div class="header d-flex justify-content-between align-items-center">
+        <div class="header d-flex justify-content-between align-items-center"
+             style="margin-bottom: 15px; margin-top: 45px; page-break-inside: avoid;">
             <span class="span5">{{ $lastUser->position ?? 'Rektor' }}</span>
 
-
             <span class="span6 d-flex justify-content-center">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code" width="100">
-    </span>
-
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code"
+                         width="100">
+            </span>
 
             <span class="span7">
-       @if($lastUser)
-                    {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}
-                    .{{ strtoupper(substr($lastUser->middlename, 0, 1)) }}.{{ $lastUser->lastname }}
+                @if($lastUser)
+                    {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}.
+                    {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}.
+                    {{ $lastUser->lastname }}
                 @endif
-
-    </span>
+            </span>
         </div>
 
 
-        <p style="margin-top: 50px;"><strong>Loyiha yaratuvchisi:</strong> {{ $author->position }}
+        <p style="margin-top: 50px;"><strong>Loyiha yaratuvchisi:</strong><br> {{ $author->position }}
             - {{ strtoupper(substr($author->firstname, 0, 1)) }}
             . {{ strtoupper(substr($author->middlename, 0, 1)) }}. {{ $author->lastname }}</p>
 
         <p><strong>Tasdiqladi:</strong></p>
 
+        {{--        {{ dd($remainingUsers) }}--}}
+
         @foreach($remainingUsers as $user)
             @if(isset($lastUser) && $lastUser->id != $user->id)
-
                 <p>
-                    {{ htmlspecialchars($user->position, ENT_QUOTES, 'UTF-8') }} (kelishildi) -
-                    {{ strtoupper(substr(htmlspecialchars($user->firstname, ENT_QUOTES, 'UTF-8'), 0, 1)) }}.
-                    {{ strtoupper(substr(htmlspecialchars($user->middlename, ENT_QUOTES, 'UTF-8'), 0, 1)) }}.
-                    {{ htmlspecialchars($user->lastname, ENT_QUOTES, 'UTF-8') }}
+                    {{ str_replace('?', "'", $user->position) }} (kelishildi) -
+                    {{ strtoupper(substr(str_replace('?', "'", $user->firstname), 0, 1)) }}
+                    .{{ strtoupper(substr(str_replace('?', "'", $user->middlename), 0, 1)) }}
+                    .{{ str_replace('?', "'", $user->lastname) }}
                 </p>
+
 
             @endif
         @endforeach
