@@ -86,7 +86,6 @@ class UserDocumentsController extends Controller
     {
         $user = auth()->user();
 
-
         $doctypes = UserDocuments::where('user_id', $user->id)->pluck('documenttype_id');
 
         if ($request->file('files')) {
@@ -156,6 +155,7 @@ class UserDocumentsController extends Controller
                     'userdocs_id' => $create->id,
                     'department_id' => $d,
                     'status' => 'waiting',
+                    'user_id' => 0,
                 ]);
             }
 
@@ -202,7 +202,7 @@ class UserDocumentsController extends Controller
             'users' => $users ?? null,
             'documenttype' => $documenttype ?? null
         ])
-            ->setPaper('A4', 'portrait') // A4 format
+            ->setPaper("A4") // A4 format
             ->setOption('isHtml5ParserEnabled', true) // Jadval to‘g‘ri chiqishi uchun
             ->setOption('isPhpEnabled', true)
             ->setOption('defaultFont', 'Times New Roman'); // Standart font

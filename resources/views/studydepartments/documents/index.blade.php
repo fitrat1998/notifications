@@ -70,36 +70,78 @@
                                         @endif
                                     </td>
                                     <td>
+
                                         <div class="stepper-wrapper">
                                             @php
                                                 $step_docs = $document->step_docs($document->id);
-                                                $status = $step_docs[0];
-                                                $departments = $step_docs[1];
-                                                $user = \App\Models\User::find($document->cancelled_user);
+                                                $status_list = collect($step_docs[0]); // Statuslarni yig‘amiz
+                                                $departments = $step_docs[1]; // Bo‘limlar ro‘yxati
+                                                $iteration = 1;
+                                                $modals = [];
                                             @endphp
 
-                                            @php $iteration = 1; @endphp
                                             @foreach($departments as $department)
-                                                @foreach($status as $s)
-                                                    @if($department->id == $s->department_id)
-                                                        @php
-                                                            $class = match ($s->status) {
-                                                                'cancelled' => 'cancelled',
-                                                                'waiting' => 'active',
-                                                                'accepted' => 'completed',
-                                                                default => ''
-                                                            };
-                                                        @endphp
-                                                        <div class="stepper-item {{ $class }}">
-                                                            <div class="step-counter">{{ $iteration }}</div>
-                                                            <div class="step-name">{{ $department->name }}</div>
-                                                        </div>
-                                                        @php $iteration++; @endphp
-                                                    @endif
-                                                @endforeach
-                                            @endforeach
+                                                @php
+                                                    $current_status = $status_list->where('department_id', $department->id)->last();
+                                                    $step_class = match ($current_status->status ?? 'waiting') {
+                                                        'cancelled' => 'cancelled',
+                                                        'accepted' => 'completed',
+                                                        default => 'active'
+                                                    };
 
+                                                $author = $document->info_user($current_status->user_id);
+                                                @endphp
+
+                                                <div class="stepper-item {{ $step_class }}">
+                                                    <button class="step-counter border-0"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#stepModal{{ $document->id }}-{{ $department->id }}-{{ $iteration }}">
+                                                        {{ $iteration }}
+                                                    </button>
+                                                    <div class="step-name">{{ $department->name }}</div>
+                                                </div>
+
+
+
+                                                @php
+                                                    $modals[] = "
+                                                         <div class='modal fade' id='stepModal{$document->id}-{$department->id}-{$iteration}'
+                                                             tabindex='-1' aria-labelledby='modalLabel{$document->id}-{$department->id}-{$iteration}'
+                                                             aria-hidden='true'>
+                                                             <div class='modal-dialog'>
+                                                                 <div class='modal-content'>
+                                                                     <div class='modal-header'>
+                                                                         <h5 class='modal-title' id='modalLabel{$document->id}-{$department->id}-{$iteration}'>
+                                                                             Step $iteration tafsilotlari
+                                                                         </h5>
+                                                                         <button type='button' class='btn-close'
+                                                                                 data-bs-dismiss='modal'
+                                                                                 aria-label='Close'></button>
+                                                                     </div>
+                                                                     <div class='modal-body'>
+                                                                         <p><strong>Bo'lim:</strong> {$department->name}</p>
+                                                                         <p><strong>Status:</strong> " . ucfirst($current_status->status ?? 'Mavjud emas') . "</p>
+                                                                        <p><strong>Qaytarilgan sababi:</strong> . ucfirst($current_status->status ?? 'Mavjud emas') . </p>
+                                                                         <p><strong>Ma'sul shaxs:</strong> " . (isset($author->firstname) || isset($author->lastname)
+                                                                          ? trim(($author->firstname ?? '') . ' ' . ($author->lastname ?? ''))
+                                                                          : 'Mavjud emas') . "</p>
+                                                                         </div>
+                                                                     <div class='modal-footer'>
+                                                                         <button type='button' class='btn btn-secondary'
+                                                                                 data-bs-dismiss='modal'>Yopish</button>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>";
+
+                                                     $iteration++;
+                                                @endphp
+                                            @endforeach
                                         </div>
+
+                                        {!! implode('', $modals) !!}
+
+
                                     </td>
                                     <td>{!! $document->report !!}</td>
                                     <td>{{ $document->updated_at }}</td>

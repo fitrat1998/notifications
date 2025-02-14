@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
 
         @font-face {
@@ -126,6 +129,20 @@
         }
 
 
+
+        table {
+            width: 100% !important;
+            font-size: 14px !important;
+            margin-left: 5px !important;
+            margin-right: 5px !important;
+
+        }
+
+        table td {
+            width: 35px !important;
+        }
+
+
     </style>
 </head>
 <body>
@@ -140,7 +157,7 @@
 
     <div class="header">
         <span class="title">BUYRUQ</span>
-                <span class="note">Loyiha</span>
+        <span class="note">Loyiha</span>
     </div>
     <div class="header">
         <span class="span1 "><span>{{ $documenttype->name  }}</span><br>{{ $userdocument->created_at->format('d-m-Y') }}</span>
@@ -167,16 +184,17 @@
 
             <span class="span6 d-flex justify-content-center">
 {{--                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code"--}}
-{{--                         width="100">--}}
+                {{--                         width="100">--}}
             </span>
 
-            <span class="span7">
-                @if($lastUser)
-                    {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}.
-                    {{ strtoupper(substr($lastUser->middlename, 0, 1)) }}.
-                    {{ $lastUser->lastname }}
-                @endif
-            </span>
+            @if($lastUser && isset($lastUser->firstname) && isset($lastUser->lastname))
+                {{ strtoupper(substr($lastUser->firstname, 0, 1)) }}.
+                {{ isset($lastUser->middlename) ? strtoupper(substr($lastUser->middlename, 0, 1)) . '.' : '' }}
+                {{ $lastUser->lastname }}
+            @else
+                <span></span>
+            @endif
+
         </div>
 
 
@@ -206,6 +224,8 @@
 
 
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

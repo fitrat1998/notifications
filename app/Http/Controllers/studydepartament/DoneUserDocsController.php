@@ -79,7 +79,9 @@ class DoneUserDocsController extends Controller
                     ->where('userdocs_id', $request->userdocs_id)
                     ->where('department_id', $user->department_id)
                     ->update([
-                        'status' => 'accepted',
+                        'user_id'    => $user->id,
+                        'status'     => 'accepted',
+                        'created_at' => NOW(),
                         'updated_at' => NOW()
                     ]);
 
@@ -121,6 +123,7 @@ class DoneUserDocsController extends Controller
                     ->where('department_id', $user->department_id)
                     ->update([
                         'status' => 'accepted',
+                         'user_id'    => $user->id,
                         'created_at' => NOW(),
                         'updated_at' => NOW()
                     ]);

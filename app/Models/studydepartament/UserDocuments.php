@@ -58,9 +58,12 @@ class UserDocuments extends Model
             ->where('userdocs_id', $id)
             ->get();
 
-        $departments = Department::all();
+        $info = UserDocuments::find($id);
+        $author = $info ? User::find($info->cancelled_user) : null;
 
-        return [$status, $departments];
+        $departments = Department::whereIn('id', $status->pluck('department_id'))->get();
+
+        return [$status, $departments, $author, $info];
     }
 
 
@@ -311,6 +314,11 @@ class UserDocuments extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function info_user($id)
+    {
+        $user = User::find($id);
+        return $user;
+    }
 
 
 }
