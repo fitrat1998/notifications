@@ -129,7 +129,6 @@
         }
 
 
-
         table {
             width: 100% !important;
             font-size: 14px !important;
@@ -140,6 +139,21 @@
 
         table td {
             width: 35px !important;
+        }
+
+        table {
+            page-break-before: avoid; /* Jadval oldidan bo‘sh joy qoldirish */
+            page-break-inside: avoid; /* Jadvalni bo‘linishini oldini olish */
+            margin-top: 20px; /* Bo‘sh qator yaratish */
+        }
+
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        tr {
+            page-break-inside: avoid; /* Qatorlarni bo‘linishini oldini olish */
         }
 
 
@@ -170,7 +184,7 @@
 
 
     <div class="content">
-        <p><strong>{!! $userdocument->comment  !!}</p>
+           <p><strong>{!! html_entity_decode($userdocument->comment, ENT_QUOTES, 'UTF-8') !!}</strong></p>
 
 
         @php
@@ -180,7 +194,7 @@
 
         <div class="header d-flex justify-content-between align-items-center"
              style="margin-bottom: 15px; margin-top: 45px; page-break-inside: avoid;">
-            <span class="span5">{{ $lastUser->position ?? 'Rektor' }}</span>
+            <span class="span5">{{ $lastUser->position ?? '' }}</span>
 
             <span class="span6 d-flex justify-content-center">
 {{--                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents($qrCodePath)) }}" alt="QR Code"--}}
