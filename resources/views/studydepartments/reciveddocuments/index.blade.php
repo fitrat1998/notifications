@@ -394,7 +394,6 @@
                                 </div> <!-- /.card -->
                             </div>
 
-
                             <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel"
                                  aria-labelledby="custom-tabs-one-messages-tab">
 
