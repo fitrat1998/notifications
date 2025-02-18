@@ -58,13 +58,69 @@
                                             <div class="border rounded p-3">
                                                 {!! $userdoc->comment !!}
                                             </div>
-
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="inputDescription">Project Description</label>
+                                            <div class="border rounded p-3">
+                                                <div class="form-group">
+                                                    <div class="border rounded p-3 d-flex flex-wrap gap-2">
+                                                        <!-- Tugmalarni bir qatorda chiqarish -->
+                                                        @foreach($userdoc->pre_done_users($userdoc->id) as $index => $preDoneUser)
+                                                            <button type="button"
+                                                                    class="btn btn-success btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                                                    style="width: 40px; height: 40px;"
+                                                                    data-toggle="modal"
+                                                                    data-target="#modal{{ $index }}">
+                                                                {{ $index + 1 }}
+                                                            </button>
+
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="modal{{ $index }}" tabindex="-1"
+                                                                 role="dialog" aria-labelledby="modalLabel{{ $index }}"
+                                                                 aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="modalLabel{{ $index }}">User
+                                                                                Details</h5>
+                                                                            <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>
+                                                                                <strong>Status:</strong> {{ $preDoneUser->status }}
+                                                                            </p>
+                                                                            <p>
+                                                                                <strong>Comment:</strong> {{ $preDoneUser->comment }}
+                                                                            </p>
+                                                                            <p><strong>User
+                                                                                    ID:</strong> {{ $preDoneUser->user_id }}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Close
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <div class="form-group">
                                             <label for="inputStatus">Fayllar</label>
                                             <br>
-
-
                                             @if($userdoc->files->isNotEmpty())
                                                 @foreach($userdoc->files as $f)
                                                     @auth

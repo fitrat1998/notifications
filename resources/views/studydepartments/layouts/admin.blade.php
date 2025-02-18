@@ -174,7 +174,6 @@
         }
 
 
-
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -195,7 +194,8 @@
                 <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                    class="nav-link dropdown-toggle">
                     @if(auth()->user())
-                        <span class="btn btn-success"><i class="fas fa-user"></i> {{ auth()->user()->firstname }} {{ auth()->user()->lastname }} - ({{ auth()->user()->position }})</span>
+                        <span class="btn btn-success"><i
+                                    class="fas fa-user"></i> {{ auth()->user()->firstname }} {{ auth()->user()->lastname }} - ({{ auth()->user()->position }})</span>
                     @endif
                 </a>
                 <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
@@ -324,6 +324,11 @@
 <script src="https://cdn.tiny.cloud/1/avkzrwv1l5m1g5pfb7ad80qz4f5mko1jjukd5k4az4imw66a/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script src="{{ asset('plugins/my/self.js')}}"></script>
 
@@ -350,7 +355,6 @@
     });
 
 
-
     table = new DataTable('#dataTabledoc');
 
 
@@ -372,7 +376,7 @@
 @endif
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('table').dataTable();
     });
 </script>
@@ -441,6 +445,30 @@
     });
 
 
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.modal form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Tasdiqlash',
+                    text: "Hujjatni chiqarishni tasdiqlaysizmi? Raqam aniq to'gri kirtilganmi?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ha, chiqarish',
+                    cancelButtonText: 'Bekor qilish'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
 </script>
 </body>
 </html>

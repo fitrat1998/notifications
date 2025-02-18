@@ -89,14 +89,14 @@
                                                         <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
                                                             - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
                                                         <td>
-                                                            @if($userdoc->status == 'accepted')
+                                                            @if($status->status == 'accepted')
                                                                 <span
                                                                         class="btn btn-success">Qabul qilingan</span>
-                                                            @elseif($userdoc->status == 'waiting')
+                                                            @elseif($status->status == 'waiting')
                                                                 <span class="btn btn-warning">Kutilmoqda</span>
                                                             @else
                                                                 <span
-                                                                        class="btn btn-danger">{{ $userdoc->status }}</span>
+                                                                        class="btn btn-danger">{{ $status->status }}</span>
                                                             @endif
                                                         </td>
                                                         <td>{{ $userdoc->created_at }}</td>
@@ -140,7 +140,8 @@
                                                                                                 raqami</label>
                                                                                             <input class="form-control"
                                                                                                    type="number"
-                                                                                                   name="number">
+                                                                                                   name="number"
+                                                                                                   required>
                                                                                         </div>
 
                                                                                         <div class="modal-footer">
@@ -246,13 +247,13 @@
                                                 @endphp
                                                 @foreach($user_documents as $userdoc)
 
-                                                    @if($userdoc->status == 'accepted')
 
-                                                        @php
-                                                            $i++;
-                                                                $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
-                                                                $previous = $userdoc->pre($userdoc->id, $status->id);
-                                                        @endphp
+                                                    @php
+                                                        $i++;
+                                                            $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
+                                                            $previous = $userdoc->pre($userdoc->id, $status->id);
+                                                    @endphp
+                                                    @if($status->status == 'accepted')
                                                         @if($userdoc->show($status->id,$userdoc->id))
                                                             <tr>
                                                                 <td>{{ $i }}</td>
@@ -277,25 +278,24 @@
                                                                 <td>
                                                                     @if($userdoc->finish_doc($userdoc->id))
                                                                         @if(!$userdoc->exists_release($userdoc->id))
-{{--                                                                            {{ dd($userdoc->exists_release($userdoc->id)) }}--}}
                                                                             <a href="#" class="btn btn-primary"
                                                                                data-bs-toggle="modal"
-                                                                               data-bs-target="#releaseModal">
+                                                                               data-bs-target="#releaseModal{{ $userdoc->id }}">
                                                                                 Buyruq chiqarish
                                                                             </a>
 
                                                                             <!-- Modal -->
-                                                                            <div class="modal fade" id="releaseModal"
+                                                                            <div class="modal fade"
+                                                                                 id="releaseModal{{ $userdoc->id }}"
                                                                                  tabindex="-1"
-                                                                                 aria-labelledby="releaseModalLabel"
+                                                                                 aria-labelledby="releaseModalLabel{{ $userdoc->id }}"
                                                                                  aria-hidden="true">
                                                                                 <div class="modal-dialog">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
                                                                                             <h5 class="modal-title"
-                                                                                                id="releaseModalLabel">
-                                                                                                Buyruq
-                                                                                                chiqarish</h5>
+                                                                                                id="releaseModalLabel{{ $userdoc->id }}">
+                                                                                                Buyruq chiqarish</h5>
                                                                                             <button type="button"
                                                                                                     class="btn-close"
                                                                                                     data-bs-dismiss="modal"
@@ -316,7 +316,8 @@
                                                                                                         raqami</label>
                                                                                                     <input class="form-control"
                                                                                                            type="number"
-                                                                                                           name="number">
+                                                                                                           name="number"
+                                                                                                           required>
                                                                                                 </div>
 
                                                                                                 <div class="modal-footer">
@@ -331,7 +332,6 @@
                                                                                                     </button>
                                                                                                 </div>
                                                                                             </form>
-
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -420,14 +420,14 @@
                                                     $i = 0;
                                                 @endphp
                                                 @foreach($user_documents as $userdoc)
-                                                    @if($userdoc->status == 'waiting')
 
 
-                                                        @php
-                                                            $i++;
-                                                                $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
-                                                                $previous = $userdoc->pre($userdoc->id, $status->id);
-                                                        @endphp
+                                                    @php
+                                                        $i++;
+                                                            $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
+                                                            $previous = $userdoc->pre($userdoc->id, $status->id);
+                                                    @endphp
+                                                    @if($status->status == 'waiting')
                                                         @if($userdoc->show($status->id,$userdoc->id))
                                                             <tr>
                                                                 <td>{{ $i}}</td>
@@ -435,14 +435,14 @@
                                                                 <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
                                                                     - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
                                                                 <td>
-                                                                    @if($userdoc->status == 'accepted')
+                                                                    @if($status->status == 'accepted')
                                                                         <span
                                                                                 class="btn btn-success">Qabul qilingan</span>
-                                                                    @elseif($userdoc->status == 'waiting')
+                                                                    @elseif($status->status == 'waiting')
                                                                         <span class="btn btn-warning">Kutilmoqda</span>
                                                                     @else
                                                                         <span
-                                                                                class="btn btn-danger">{{ $userdoc->status }}</span>
+                                                                                class="btn btn-danger">{{ $status->status }}</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>
@@ -533,13 +533,13 @@
                                                 @endphp
                                                 {{--                                                {{ dd($user_documents) }}--}}
                                                 @foreach($user_documents as $userdoc)
-                                                    @if($userdoc->status == 'cancelled')
-                                                        {{ $userdoc->status }}
-                                                        @php
-                                                            $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
-                                                            $previous = $userdoc->pre($userdoc->id, $status->id);
+                                                    {{ $userdoc->status }}
+                                                    @php
+                                                        $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
+                                                        $previous = $userdoc->pre($userdoc->id, $status->id);
 
-                                                        @endphp
+                                                    @endphp
+                                                    @if($status->status == 'cancelled')
                                                         <tr>
                                                             <td>{{ $i }}</td>
                                                             <td>{{ $userdoc->documenttype->name }}</td>

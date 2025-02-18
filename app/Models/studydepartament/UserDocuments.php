@@ -337,5 +337,13 @@ class UserDocuments extends Model
 
     }
 
+    public function pre_done_users($id)
+    {
+
+        $done = DoneUserDocs::where('userdocs_id',$id)->get();
+
+        return $done;
+    }
+
 
 }
