@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\studydepartament\StoreRecivedDocumentsRequest;
 use App\Http\Requests\studydepartament\UpdateRecivedDocumentsRequest;
 use App\Models\admin\SendTask;
+use App\Models\documenttype\DocumentType;
+use App\Models\Release;
 use App\Models\studydepartament\Donetask;
 use App\Models\studydepartament\DoneUserDocs;
 use App\Models\studydepartament\RecivedDocuments;
 use App\Models\studydepartament\UserDocuments;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -68,7 +72,6 @@ class RecivedDocumentsController extends Controller
         $user_documents = UserDocuments::whereIn('id', $user_documents_id)
             ->orderBy('id', 'desc')
             ->get();
-
 
 
         return view('studydepartments.reciveddocuments.index', compact('count', 'count_docs', 'user_documents'));
@@ -213,9 +216,55 @@ class RecivedDocumentsController extends Controller
 
     }
 
+    public function show_release_project($id)
+    {
+        $document = DoneUserDocs::where('userdocs_id', $id)->get(); 1;
+        $users_ids = $document->pluck('user_id');
+
+        $users = User::whereIn('id', $users_ids)
+            ->select('id', 'firstname', 'lastname', 'middlename','position')
+            ->get();
+
+        $pdf_author = auth()->user()->id;
+
+        $userdocument = UserDocuments::findOrFail($id);
+        $author = User::findOrFail($userdocument->user_id);
+
+        $documenttype_id = $userdocument->documenttype_id;
+        $documenttype = DocumentType::findOrFail($documenttype_id);
+
+        $existingRelease = Release::where('document_id', $userdocument->id)
+            ->where('user_id', $pdf_author)
+            ->where('documenttype_id', $documenttype_id)
+            ->latest()
+            ->first();
+
+        $userdocument = UserDocuments::findOrFail($id);
+
+        $pdf = Pdf::loadView('release.show', [
+            'userdocument' => $userdocument,
+            'author' => $author ?? null,
+            'users' => $users ?? null,
+            'documenttype' => $documenttype ?? null
+        ])
+            ->setPaper("A4") // A4 format
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isPhpEnabled', true)
+            ->setOption('defaultFont', 'Times New Roman');
+
+        $pdf->getDomPDF()->set_option("defaultFont", "dejavu sans");
+
+        $pdfFileName = storage_path('app/pdfs/' . hash('sha256', $id . 'hujjat') . '.pdf');
+
+        if (!File::exists(storage_path('app/pdfs'))) {
+            File::makeDirectory(storage_path('app/pdfs'), 0775, true);
+        }
+
+        return $pdf->stream('document.pdf');
+    }
+
     public function reject($id)
     {
-//        return $id;
         $user = auth()->user();
 
         $users = User::where('department_id', '!=', '')

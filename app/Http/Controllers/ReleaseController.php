@@ -36,7 +36,7 @@ class ReleaseController extends Controller
         $users_ids = $document->pluck('user_id');
 
         $users = User::whereIn('id', $users_ids)
-            ->select('id', 'firstname', 'lastname', 'middlename', 'position')
+            ->select( 'firstname', 'lastname', 'middlename', 'position')
             ->get();
 
         if (auth()->user()) {

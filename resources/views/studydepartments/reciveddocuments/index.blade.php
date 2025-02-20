@@ -178,7 +178,7 @@
                                                                 method="post">
                                                                 @csrf
                                                                 <div class="btn-category">
-                                                                    <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
+                                                                    <a href="{{ route('reciveddocuments.show_release_project', $userdoc->id) }}"
                                                                        class="btn btn-primary btn-sm"
                                                                        title="Batafsil">
                                                                         <i class="fa-solid fa-eye"></i>

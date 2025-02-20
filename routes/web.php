@@ -125,6 +125,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('reciveddocuments/detail/{id}/', [RecivedDocumentsController::class, 'detail'])->name('reciveddocuments.detail');
 
+        Route::get('reciveddocuments/show_release_project/{id}/', [RecivedDocumentsController::class, 'show_release_project'])->name('reciveddocuments.show_release_project');
+
         Route::resource('studydepartments', StudyDepartamentController::class);
 
         Route::resource('final_steps', FinalStepController::class);

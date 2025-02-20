@@ -174,7 +174,6 @@
         }
 
 
-
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -195,7 +194,8 @@
                 <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                    class="nav-link dropdown-toggle">
                     @if(auth()->user())
-                        <span class="btn btn-success"><i class="fas fa-user"></i> {{ auth()->user()->firstname }} {{ auth()->user()->lastname }} - ({{ auth()->user()->position }})</span>
+                        <span class="btn btn-success"><i
+                                class="fas fa-user"></i> {{ auth()->user()->firstname }} {{ auth()->user()->lastname }} - ({{ auth()->user()->position }})</span>
                     @endif
                 </a>
                 <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
@@ -352,7 +352,6 @@
     });
 
 
-
     table = new DataTable('#dataTabledoc');
 
 
@@ -374,7 +373,7 @@
 @endif
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('table').dataTable();
     });
 </script>
@@ -446,31 +445,31 @@
 </script>
 
 <script>
-document.getElementById('releaseForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Formani avtomatik jo‘natishni to‘xtatamiz
+    document.getElementById('releaseForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Formani avtomatik jo‘natishni to‘xtatamiz
 
-    let numberValue = document.getElementById('commandNumber').value; // Buyruq raqamini olish
+        let numberValue = document.getElementById('commandNumber').value; // Buyruq raqamini olish
 
-    if (!numberValue) {
-        Swal.fire("Xatolik", "Iltimos, buyruq raqamini kiriting!", "error");
-        return;
-    }
-
-    Swal.fire({
-        title: "Tasdiqlaysizmi?",
-        text: `Buyruq raqami aniq ${numberValue} mi?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ha, buyruqni chiqar!",
-        cancelButtonText: "Bekor qilish"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            event.target.submit(); // Agar foydalanuvchi tasdiqlasa, formani jo‘natamiz
+        if (!numberValue) {
+            Swal.fire("Xatolik", "Iltimos, buyruq raqamini kiriting!", "error");
+            return;
         }
+
+        Swal.fire({
+            title: "Tasdiqlaysizmi?",
+            text: `Buyruq raqami aniq ${numberValue} mi?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ha, buyruqni chiqar!",
+            cancelButtonText: "Bekor qilish"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); // Agar foydalanuvchi tasdiqlasa, formani jo‘natamiz
+            }
+        });
     });
-});
 </script>
 </body>
 </html>
