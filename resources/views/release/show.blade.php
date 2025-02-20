@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hujjat loyihasi</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -26,6 +26,10 @@
         @font-face {
             font-family: "DejaVu Sans";
             src: url("https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/fonts/dejavu-sans/DejaVuSans.ttf") format("truetype");
+        }
+
+        tbody tr td p, p span{
+            font-family: 'DejaVu Sans', serif !important;
         }
 
         .container {
@@ -185,20 +189,18 @@
             }
         }
 
-        td {
-            max-width: 35px !important; /* Kenglikni cheklash */
-            word-wrap: break-word; /* So‘zlarni bo‘lib chiqish */
-            white-space: normal; /* Matnni chiziqlarga ajratish */
-            overflow: hidden; /* Tashqariga chiqishni oldini olish */
-        }
 
-        td {
-            min-width: 14px; /* Ustun kengligini oshirish */
-            text-align: center; /* Sonlarni o‘rtaga olish */
+     td {
+            min-width: 34px; /* Ustun kengligini oshirish */
+            text-align: center !important; /* Sonlarni o‘rtaga olish */
             white-space: normal !important; /* Matnni ajratish */
-s            overflow: visible !important; /* Matnni yashirmaslik */
+            overflow: visible !important; /* Matnni yashirmaslik */
             color: black !important; /* Agar matn foni bilan bir xil rangda bo‘lsa */
         }
+
+    table tbody tr td p span {
+        margin-left: 15px !important;
+    }
 
 
     </style>
@@ -228,7 +230,7 @@ s            overflow: visible !important; /* Matnni yashirmaslik */
 
 
     <div class="content">
-        <p><strong>{!! html_entity_decode($userdocument->comment, ENT_QUOTES, 'UTF-8') !!}</strong></p>
+        <p ><strong class="number-sign">{!! html_entity_decode($userdocument->comment, ENT_QUOTES, 'UTF-8') !!}</strong></p>
 
 
         <div class="pagedown" style="page-break-before: auto; page-break-inside: avoid;">
