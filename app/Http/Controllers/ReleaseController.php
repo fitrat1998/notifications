@@ -27,12 +27,90 @@ class ReleaseController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $id = intval($request->release_id);
+        $number = intval($request->number);
+
+        $document = DoneUserDocs::where('userdocs_id', $id)->get();
+        $users_ids = $document->pluck('user_id');
+
+        $users = User::whereIn('id', $users_ids)
+            ->select('id', 'firstname', 'lastname', 'middlename', 'position')
+            ->get();
+
+        if (auth()->user()) {
+            $pdf_author = auth()->user()->id;
+        }
+
+        $userdocument = UserDocuments::find($id);
+        $author = User::findOrFail($userdocument->user_id);
+
+        $documenttype_id = $userdocument->documenttype_id;
+        $documenttype = DocumentType::findOrFail($documenttype_id);
+
+        $existingRelease = Release::where('document_id', $userdocument->id)
+            ->where('documenttype_id', $documenttype_id)
+            ->latest()
+            ->first();
+
+        if ($existingRelease) {
+            return $this->getDownload($id);
+        } else {
+            $fileUrl = route('release.pdf', ['id' => $id]);
+            $shortenedUrl = url('/') . '/short/' . urlencode(base64_encode($fileUrl));
+
+            $qrCode = QrCode::format('png')->size(200)->generate($shortenedUrl);
+
+            $hashedFileName = hash('sha256', $id . 'qrcode') . '.png';
+            $qrCodePath = public_path('qr-codes/' . $hashedFileName);
+
+            if (!File::exists(public_path('qr-codes'))) {
+                File::makeDirectory(public_path('qr-codes'), 0775, true);
+            }
+
+            file_put_contents($qrCodePath, $qrCode);
+
+            $users = $users->map(function ($user) {
+                return (object)[
+                    'id' => $user->id,
+                    'position' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->position, 'UTF-8', 'auto')),
+                    'firstname' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->firstname, 'UTF-8', 'auto')),
+                    'middlename' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->middlename, 'UTF-8', 'auto')),
+                    'lastname' => str_replace(['`', 'ʻ', 'Oʻ', 'oʻ'], ["'", "'", "O'", "o'"], mb_convert_encoding($user->lastname, 'UTF-8', 'auto')),
+                ];
+            });
+
+            $pdf = PDF::loadView('release.userdocument', compact('userdocument', 'users', 'documenttype', 'qrCodePath', 'author', 'number'))
+                ->setPaper('A4', 'portrait')
+                ->setOptions([
+                    'defaultFont' => 'Times New Roman'
+                ]);
+
+            $pdf->getDomPDF()->set_option('defaultFont', 'Times New Roman');
+            $pdf->setPaper('A4', 'portrait');
+
+            $pdfFileName = hash('sha256', $id . 'hujjat') . '.pdf';
+            $pdfPath = storage_path('app/pdfs/' . $pdfFileName);
+
+            if (!File::exists(storage_path('app/pdfs'))) {
+                File::makeDirectory(storage_path('app/pdfs'), 0775, true);
+            }
+
+            $pdf->save($pdfPath);
+
+            if (!$existingRelease) {
+                $releaseDocument = new Release();
+                $releaseDocument->document_id = $userdocument->id;
+                $releaseDocument->user_id = $pdf_author ?? 0;
+                $releaseDocument->documenttype_id = $documenttype->id;
+                $releaseDocument->file = $pdfFileName;
+                $releaseDocument->qrcode = 'qr-codes/' . $hashedFileName;
+                $releaseDocument->save();
+            }
+
+            return $this->getDownload($id);
+        }
     }
 
     /**

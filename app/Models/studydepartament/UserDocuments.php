@@ -321,4 +321,28 @@ class UserDocuments extends Model
     }
 
 
+    public function exists_release($id)
+    {
+        $doc = DB::table('releases')
+            ->where('document_id', $id)
+            ->where('user_id', auth()->user()->id)
+            ->first();
+
+        if ($doc) {
+            return true;
+        } else {
+            return null;
+        }
+
+    }
+
+    public function pre_done_users($id)
+    {
+
+        $done = DoneUserDocs::where('userdocs_id', $id)->get();
+        $done = DoneUserDocs::where('userdocs_id', $id)->pluck('user_id');
+
+
+        return User::whereIn('id', $done)->get();
+    }
 }

@@ -146,7 +146,15 @@
         <span class="span1 "><span>{{ $documenttype->name  }}</span><br>{{ $userdocument->created_at->format('d-m-Y') }}</span>
 
         <span class="span2">&#8470;</span>
+<<<<<<< HEAD
         <span class="span"> {{ $userdocument->id }}</span>
+=======
+<<<<<<< HEAD
+        <span class="span"> {{ $userdocument->id }}</span>
+=======
+        <span class="span"> {{ $number }}</span>
+>>>>>>> b81b260 (Initial commit)
+>>>>>>> master
 
         <span class="span3">Samarqand sh.</span>
     </div>

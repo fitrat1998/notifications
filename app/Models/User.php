@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\admin\Department;
 use App\Models\admin\Faculty;
+use App\Models\studydepartament\DoneUserDocs;
+use App\Models\studydepartament\UserDocsHasDoneFile;
 use App\Models\studydepartament\UserDocuments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -70,4 +72,22 @@ class User extends Authenticatable
     {
         return $this->belongsTo(UserDocuments::class, 'document_id', 'id');
     }
+
+    public function doneuserdocs()
+    {
+        return $this->hasMany(DoneUserDocs::class, 'user_id', 'id')
+            ->orWhere('userdocs_id', $this->id);
+    }
+
+    public function done_user_docs_files($id)
+    {
+        $files = UserDocsHasDoneFile::where('done_user_docs_id', $id)->get();
+
+        if ($files) {
+            return $files;
+        } else {
+            return null;
+        }
+    }
+
 }

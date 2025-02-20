@@ -11,7 +11,15 @@ class StoreReleaseRequest extends FormRequest
      */
     public function authorize(): bool
     {
+<<<<<<< HEAD
         return false;
+=======
+<<<<<<< HEAD
+        return false;
+=======
+        return true;
+>>>>>>> b81b260 (Initial commit)
+>>>>>>> master
     }
 
     /**
