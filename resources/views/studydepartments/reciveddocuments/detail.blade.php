@@ -61,7 +61,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="inputDescription">Project Description</label>
+                                            <label for="inputDescription">Tasdiqlagan bo'limlar</label>
                                             <div class="border rounded p-3">
                                                 <div class="form-group">
                                                     <div class="border rounded p-3 d-flex flex-wrap gap-2">
@@ -83,29 +83,70 @@
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title"
-                                                                                id="modalLabel{{ $index }}">User
-                                                                                Details</h5>
+                                                                                id="modalLabel{{ $index }}">
+                                                                                Ma'lumotlar</h5>
                                                                             <button type="button" class="close"
                                                                                     data-dismiss="modal"
                                                                                     aria-label="Close">
                                                                                 <span aria-hidden="true">&times;</span>
                                                                             </button>
                                                                         </div>
+
                                                                         <div class="modal-body">
-                                                                            <p>
-                                                                                <strong>Status:</strong> {{ $preDoneUser->status }}
-                                                                            </p>
-                                                                            <p>
-                                                                                <strong>Comment:</strong> {{ $preDoneUser->comment }}
-                                                                            </p>
-                                                                            <p><strong>User
-                                                                                    ID:</strong> {{ $preDoneUser->user_id }}
-                                                                            </p>
+                                                                            @php
+                                                                                $doneUserDoc = optional($preDoneUser->doneuserdocs->first());
+                                                                            @endphp
+
+                                                                            @if($doneUserDoc->userdocs_id == $userdoc->id)
+                                                                                <p>
+                                                                                    <strong>Bo'lim:</strong> {{ $preDoneUser->department->name }}
+                                                                                </p>
+                                                                                <p>
+                                                                                    <strong>Status:</strong>
+                                                                                    @if($doneUserDoc->status == 'accepted')
+                                                                                        <b class="text-success">Qabul
+                                                                                            qilingan</b>
+                                                                                    @elseif($doneUserDoc->status == 'cancelled')
+                                                                                        <b class="text-danger">Rad
+                                                                                            etilgan</b>
+                                                                                    @endif
+                                                                                </p>
+                                                                                <p>
+                                                                                    <strong>Izoh:</strong> {!! $doneUserDoc->comment ?? 'Mavjud emas' !!}
+                                                                                </p>
+                                                                                <p><strong>Qaytarilganligi
+                                                                                        sababi:</strong>
+                                                                                    @if($doneUserDoc->report != 'empty')
+                                                                                        {{ $doneUserDoc->report ?? 'Mavjud emas' }}
+                                                                                    @endif
+                                                                                </p>
+                                                                                <p>
+                                                                                    <strong>Tasdiqladi:</strong> {{ $preDoneUser->firstname }} {{ $preDoneUser->lastname }}
+                                                                                </p>
+                                                                                <p>
+                                                                                    <strong>Ilova qilingan fayl:</strong>
+                                                                                    @if($preDoneUser->done_user_docs_files($doneUserDoc->id)->isNotEmpty())
+                                                                                        @foreach($preDoneUser->files as $file)
+                                                                                            @auth
+                                                                                                <a href="{{ route('userdocuments.download', $file->name) }}"
+                                                                                                   class="btn btn-primary"
+                                                                                                   type="button">
+                                                                                                    {{ $file->title }}
+                                                                                                </a>
+                                                                                            @endauth
+                                                                                        @endforeach
+                                                                                    @else
+                                                                                        Bu hujjatda fayl mavjud emas.
+                                                                                    @endif
+                                                                                </p>
+
+                                                                            @endif
+
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button"
                                                                                     class="btn btn-secondary"
-                                                                                    data-dismiss="modal">Close
+                                                                                    data-dismiss="modal">Yopish
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -142,7 +183,8 @@
                                             <label for="inputStatus">Kim tominida yaratilgan</label>
                                             <br>
                                             {{--                                             {{ $userdoc->user->roles->first()->name ?? 'No role' }}--}}
-                                            <span class="btn btn-success">{{ $userdoc->user->lastname }}  {{ $userdoc->user->firstname }}</span>
+                                            <span
+                                                class="btn btn-success">{{ $userdoc->user->lastname }}  {{ $userdoc->user->firstname }} - {{ $userdoc->user->position }}</span>
 
                                         </div>
 

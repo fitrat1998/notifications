@@ -340,9 +340,9 @@ class UserDocuments extends Model
     public function pre_done_users($id)
     {
 
-        $done = DoneUserDocs::where('userdocs_id',$id)->get();
+        $done = DoneUserDocs::where('userdocs_id',$id)->pluck('user_id');
 
-        return $done;
+        return User::whereIn('id',$done)->get();
     }
 
 

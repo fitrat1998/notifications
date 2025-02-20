@@ -11,4 +11,11 @@ class UserDocsHasDoneFile  extends Model
 
     public $table = "done_user_docs_files";
 
+    protected $fillable = [
+        'userdocs_id',
+        'done_user_docs_files',
+        'name',
+        'status',
+    ];
+
 }

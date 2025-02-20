@@ -74,8 +74,8 @@
                                         <div class="stepper-wrapper">
                                             @php
                                                 $step_docs = $document->step_docs($document->id);
-                                                $status_list = collect($step_docs[0]); // Statuslarni yig‘amiz
-                                                $departments = $step_docs[1]; // Bo‘limlar ro‘yxati
+                                                $status_list = collect($step_docs[0]);
+                                                $departments = $step_docs[1];
                                                 $iteration = 1;
                                                 $modals = [];
                                             @endphp
@@ -88,8 +88,9 @@
                                                         'accepted' => 'completed',
                                                         default => 'active'
                                                     };
-
-                                                $author = $document->info_user($current_status->user_id);
+                                                    if($current_status){
+                                                        $author = $document->info_user($current_status->user_id);
+                                                    }
                                                 @endphp
 
                                                 <div class="stepper-item {{ $step_class }}">
