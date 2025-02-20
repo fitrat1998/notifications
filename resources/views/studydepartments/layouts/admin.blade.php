@@ -324,6 +324,8 @@
 <script src="https://cdn.tiny.cloud/1/avkzrwv1l5m1g5pfb7ad80qz4f5mko1jjukd5k4az4imw66a/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script src="{{ asset('plugins/my/self.js')}}"></script>
 
@@ -441,6 +443,34 @@
     });
 
 
+</script>
+
+<script>
+document.getElementById('releaseForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Formani avtomatik jo‘natishni to‘xtatamiz
+
+    let numberValue = document.getElementById('commandNumber').value; // Buyruq raqamini olish
+
+    if (!numberValue) {
+        Swal.fire("Xatolik", "Iltimos, buyruq raqamini kiriting!", "error");
+        return;
+    }
+
+    Swal.fire({
+        title: "Tasdiqlaysizmi?",
+        text: `Buyruq raqami aniq ${numberValue} mi?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ha, buyruqni chiqar!",
+        cancelButtonText: "Bekor qilish"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            event.target.submit(); // Agar foydalanuvchi tasdiqlasa, formani jo‘natamiz
+        }
+    });
+});
 </script>
 </body>
 </html>

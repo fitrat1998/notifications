@@ -91,12 +91,12 @@
                                                         <td>
                                                             @if($status->status == 'accepted')
                                                                 <span
-                                                                        class="btn btn-success">Qabul qilingan</span>
+                                                                    class="btn btn-success">Qabul qilingan</span>
                                                             @elseif($status->status == 'waiting')
                                                                 <span class="btn btn-warning">Kutilmoqda</span>
                                                             @else
                                                                 <span
-                                                                        class="btn btn-danger">{{ $status->status }}</span>
+                                                                    class="btn btn-danger">{{ $status->status }}</span>
                                                             @endif
                                                         </td>
                                                         <td>{{ $userdoc->created_at->format('d.m.Y') }}</td>
@@ -108,7 +108,6 @@
                                                                        data-bs-target="#releaseModal">
                                                                         Buyruq chiqarish
                                                                     </a>
-
                                                                     <!-- Modal -->
                                                                     <div class="modal fade" id="releaseModal"
                                                                          tabindex="-1"
@@ -127,7 +126,8 @@
                                                                                 </div>
                                                                                 <div class="modal-body">
                                                                                     <!-- Forma -->
-                                                                                    <form action="{{ route('release.store') }}"
+                                                                                    <form id="releaseForm"
+                                                                                          action="{{ route('release.store') }}"
                                                                                           method="POST">
                                                                                         @csrf
                                                                                         <input type="hidden"
@@ -141,6 +141,7 @@
                                                                                             <input class="form-control"
                                                                                                    type="number"
                                                                                                    name="number"
+                                                                                                   id="commandNumber"
                                                                                                    required>
                                                                                         </div>
 
@@ -151,12 +152,12 @@
                                                                                                 Bekor qilish
                                                                                             </button>
                                                                                             <button type="submit"
-                                                                                                    class="btn btn-primary">
+                                                                                                    class="btn btn-primary"
+                                                                                                    id="submitBtn">
                                                                                                 Chiqarish
                                                                                             </button>
                                                                                         </div>
                                                                                     </form>
-
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -173,8 +174,8 @@
                                                         </td>
                                                         <td class="text-center">
                                                             <form
-                                                                    action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
-                                                                    method="post">
+                                                                action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
+                                                                method="post">
                                                                 @csrf
                                                                 <div class="btn-category">
                                                                     <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
@@ -263,12 +264,12 @@
                                                                 <td>
                                                                     @if($status->status == 'accepted')
                                                                         <span
-                                                                                class="btn btn-success">Qabul qilingan</span>
+                                                                            class="btn btn-success">Qabul qilingan</span>
                                                                     @elseif($status->status == 'waiting')
                                                                         <span class="btn btn-warning">Kutilmoqda</span>
                                                                     @else
                                                                         <span
-                                                                                class="btn btn-danger">{{ $status->status }}</span>
+                                                                            class="btn btn-danger">{{ $status->status }}</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>
@@ -303,31 +304,37 @@
                                                                                         </div>
                                                                                         <div class="modal-body">
                                                                                             <!-- Forma -->
-                                                                                            <form action="{{ route('release.store') }}"
-                                                                                                  method="POST">
+                                                                                            <form
+                                                                                                action="{{ route('release.store') }}"
+                                                                                                method="POST">
                                                                                                 @csrf
                                                                                                 <input type="hidden"
                                                                                                        name="release_id"
                                                                                                        value="{{ $userdoc->id }}">
 
                                                                                                 <div class="mb-3">
-                                                                                                    <label for="command_text"
-                                                                                                           class="form-label">Buyruq
+                                                                                                    <label
+                                                                                                        for="command_text"
+                                                                                                        class="form-label">Buyruq
                                                                                                         raqami</label>
-                                                                                                    <input class="form-control"
-                                                                                                           type="number"
-                                                                                                           name="number"
-                                                                                                           required>
+                                                                                                    <input
+                                                                                                        class="form-control"
+                                                                                                        type="number"
+                                                                                                        name="number"
+                                                                                                        required>
                                                                                                 </div>
 
-                                                                                                <div class="modal-footer">
-                                                                                                    <button type="button"
-                                                                                                            class="btn btn-secondary"
-                                                                                                            data-bs-dismiss="modal">
+                                                                                                <div
+                                                                                                    class="modal-footer">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn btn-secondary"
+                                                                                                        data-bs-dismiss="modal">
                                                                                                         Bekor qilish
                                                                                                     </button>
-                                                                                                    <button type="submit"
-                                                                                                            class="btn btn-primary">
+                                                                                                    <button
+                                                                                                        type="submit"
+                                                                                                        class="btn btn-primary">
                                                                                                         Chiqarish
                                                                                                     </button>
                                                                                                 </div>
@@ -348,8 +355,8 @@
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <form
-                                                                            action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
-                                                                            method="post">
+                                                                        action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
+                                                                        method="post">
                                                                         @csrf
                                                                         <div class="btn-category">
                                                                             <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
@@ -437,12 +444,12 @@
                                                                 <td>
                                                                     @if($status->status == 'accepted')
                                                                         <span
-                                                                                class="btn btn-success">Qabul qilingan</span>
+                                                                            class="btn btn-success">Qabul qilingan</span>
                                                                     @elseif($status->status == 'waiting')
                                                                         <span class="btn btn-warning">Kutilmoqda</span>
                                                                     @else
                                                                         <span
-                                                                                class="btn btn-danger">{{ $status->status }}</span>
+                                                                            class="btn btn-danger">{{ $status->status }}</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>
@@ -460,8 +467,8 @@
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <form
-                                                                            action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
-                                                                            method="post">
+                                                                        action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
+                                                                        method="post">
                                                                         @csrf
                                                                         <div class="btn-category">
                                                                             <a href="{{ route('reciveddocuments.detail', $userdoc->id) }}"
@@ -548,12 +555,12 @@
                                                             <td>
                                                                 @if($userdoc->status == 'accepted')
                                                                     <span
-                                                                            class="btn btn-success">Qabul qilingan</span>
+                                                                        class="btn btn-success">Qabul qilingan</span>
                                                                 @elseif($userdoc->status == 'waiting')
                                                                     <span class="btn btn-warning">Kutilmoqda</span>
                                                                 @else
                                                                     <span
-                                                                            class="btn btn-danger">{{ $userdoc->status }}</span>
+                                                                        class="btn btn-danger">{{ $userdoc->status }}</span>
                                                                 @endif
                                                             </td>
                                                             <td>{{ $userdoc->created_at }}</td>
