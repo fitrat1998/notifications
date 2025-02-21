@@ -477,5 +477,26 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let modalButtons = document.querySelectorAll("[data-bs-toggle='modal']");
+
+        modalButtons.forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                let targetModalId = btn.getAttribute("data-bs-target");
+                let modalElement = document.querySelector(targetModalId);
+
+                if (modalElement) {
+                    let modalInstance = new bootstrap.Modal(modalElement);
+                    modalInstance.show();
+                } else {
+                    console.error("Modal topilmadi: " + targetModalId);
+                }
+            });
+        });
+    });
+
+</script>
 </body>
 </html>

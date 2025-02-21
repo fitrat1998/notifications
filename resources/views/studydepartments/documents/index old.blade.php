@@ -50,7 +50,7 @@
                             <tbody>
                             @foreach($documents as $document)
                                 <tr id="datas_ids{{ $document->id }}">
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $document->id }}</td>
                                     <td>{{ optional($document->documenttype)->name }}</td>
                                     <td>
                                         <p>{{ \Illuminate\Support\Str::limit(strip_tags($document->comment), 100, '...') }}</p>
@@ -71,16 +71,17 @@
                                     </td>
                                     <td>
 
-                                        @php
-                                            $step_docs = $document->step_docs($document->id);
-                                            $status_list = collect($step_docs[0] ?? []); // Statuslarni yig‘amiz
-                                            $departments = $step_docs[1] ?? []; // Bo‘limlar ro‘yxati
-                                            $total_steps = count($departments);
-                                            $modals = [];
-                                        @endphp
-
                                         <div class="stepper-wrapper">
-                                            @foreach($departments as $index => $department)
+                                            @php
+                                                $step_docs = $document->step_docs($document->id);
+                                                $status_list = collect($step_docs[0]); // Statuslarni yig‘amiz
+                                                $departments = $step_docs[1]; // Bo‘limlar ro‘yxati
+                                                $iteration = 1;
+                                                $total_steps = count($departments);
+                                                $modals = [];
+                                            @endphp
+
+                                            @foreach($departments as $department)
                                                 @php
                                                     $current_status = $status_list->where('department_id', $department->id)->last();
                                                     $step_class = match ($current_status->status ?? 'waiting') {
@@ -88,8 +89,8 @@
                                                         'accepted' => 'completed',
                                                         default => 'active'
                                                     };
-                                                    $author = $document->info_user($current_status->user_id ?? null);
-                                                    $iteration = $index + 1; // Har doim department indeksiga qarab iterationni qo'yamiz
+
+                                                    $author = $document->info_user($current_status->user_id);
                                                 @endphp
 
                                                 <div class="stepper-item {{ $step_class }}">
@@ -100,47 +101,42 @@
                                                     </button>
                                                     <div class="step-name">{{ $department->name }}</div>
 
+                                                    {{-- Agar bu oxirgi step bo'lsa, chiziq chiqarilmasin --}}
                                                     @if ($iteration < $total_steps)
                                                         <div class="step-line"></div>
                                                     @endif
                                                 </div>
 
                                                 @php
-                                                    $done_docs = $document->doneuserdocs($document->id);
-                                                    $done_doc = $done_docs[$index] ?? null; // To'g'ri indeksni olish
-                                                @endphp
-
-                                                @if ($done_doc)
-                                                    @php
-                                                        $modals[] = "
-                                                            <div class='modal fade' id='stepModal{$document->id}-{$department->id}-{$iteration}'
-                                                                tabindex='-1' aria-labelledby='modalLabel{$document->id}-{$department->id}-{$iteration}'
-                                                                aria-hidden='true'>
-                                                                <div class='modal-dialog'>
-                                                                    <div class='modal-content'>
-                                                                        <div class='modal-header'>
-                                                                            <h5 class='modal-title' id='modalLabel{$document->id}-{$department->id}-{$iteration}'>
-                                                                                Step $iteration tafsilotlari
-                                                                            </h5>
-                                                                            <button type='button' class='btn-close'
-                                                                                    data-bs-dismiss='modal'
-                                                                                    aria-label='Close'></button>
-                                                                        </div>
-                                                                        <div class='modal-body'>
-                                                                            <p><strong>Bo'lim:</strong> {$department->name}</p>
-                                                                            <p><strong>Qaytarilgan sababi:</strong> {{ $done_doc->report ? ucfirst($done_doc->report) : 'Mavjud emas' }}</p>
-                                                                            <p><strong>Ma'sul shaxs:</strong> " . ($done_doc->user ? $done_doc->user->firstname . ' ' . $done_doc->user->lastname : 'Mavjud emas') . "</p>
-                                                                             <p><strong>Qaytarilgan vaqti:</strong> {$done_doc->updated_at->format('d.m.Y')}</p>
-                                                                          </div>
-                                                                        <div class='modal-footer'>
-                                                                            <button type='button' class='btn btn-secondary'
-                                                                                    data-bs-dismiss='modal'>Yopish</button>
-                                                                        </div>
+                                                    $modals[] = "
+                                                        <div class='modal fade' id='stepModal{$document->id}-{$department->id}-{$iteration}'
+                                                            tabindex='-1' aria-labelledby='modalLabel{$document->id}-{$department->id}-{$iteration}'
+                                                            aria-hidden='true'>
+                                                            <div class='modal-dialog'>
+                                                                <div class='modal-content'>
+                                                                    <div class='modal-header'>
+                                                                        <h5 class='modal-title' id='modalLabel{$document->id}-{$department->id}-{$iteration}'>
+                                                                            Step $iteration tafsilotlari
+                                                                        </h5>
+                                                                        <button type='button' class='btn-close'
+                                                                                data-bs-dismiss='modal'
+                                                                                aria-label='Close'></button>
+                                                                    </div>
+                                                                    <div class='modal-body'>
+                                                                        <p><strong>Bo'lim:</strong> {$department->name}</p>
+                                                                        <p><strong>Status:</strong> " . ($current_status->status ?? 'Mavjud emas') . "</p>
+                                                                        <p><strong>Qaytarilgan sababi:</strong> " . ucfirst($current_status->status ?? 'Mavjud emas') . "</p>
+                                                                        <p><strong>Ma'sul shaxs:</strong> " . $document->doneDocs . "</p>
+                                                                    </div>
+                                                                    <div class='modal-footer'>
+                                                                        <button type='button' class='btn btn-secondary'
+                                                                                data-bs-dismiss='modal'>Yopish</button>
                                                                     </div>
                                                                 </div>
-                                                            </div>";
-                                                    @endphp
-                                                @endif
+                                                            </div>
+                                                        </div>";
+                                                    $iteration++;
+                                                @endphp
                                             @endforeach
                                         </div>
 

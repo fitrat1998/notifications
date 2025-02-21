@@ -354,7 +354,8 @@ class UserDocuments extends Model
 
     public function doneuserdocs($id)
     {
-        return DoneUserDocs::where('userdocs_id', $id)->first();
+        return DoneUserDocs::where('userdocs_id', $id)
+            ->get();
     }
 
 
