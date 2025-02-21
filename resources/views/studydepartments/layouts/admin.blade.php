@@ -293,8 +293,6 @@
 <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
 
 
-<script src="{{ asset('plugins/select2/js/select2.full.min.js')}}"></script>
-
 <script src="{{ asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -318,6 +316,14 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{ asset('plugins/toastr/toastr.min.js')}}"></script>
+<script src="{{ asset('plugins/select2/js/select2.full.min.js')}}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+</script>
+
 {{--<script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/inline/ckeditor.js"></script>--}}
 
 <!-- Place the first <script> tag in your HTML's <head> -->

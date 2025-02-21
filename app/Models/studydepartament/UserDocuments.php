@@ -269,6 +269,12 @@ class UserDocuments extends Model
                 return null;
             }
         }
+//        elseif(empty($previous) && empty($next) && $current) {
+//            if($current->status == 'accepted')
+//            {
+//                return 1;
+//            }
+//        }
 
     }
 
@@ -341,7 +347,6 @@ class UserDocuments extends Model
 
         $done = DoneUserDocs::where('userdocs_id', $id)->get();
         $done = DoneUserDocs::where('userdocs_id', $id)->pluck('user_id');
-
 
         return User::whereIn('id', $done)->get();
     }

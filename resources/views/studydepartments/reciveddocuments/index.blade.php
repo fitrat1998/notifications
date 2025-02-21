@@ -172,7 +172,7 @@
                                                                 Kutilmoqda
                                                             @endif
                                                         </td>
-                                                        <td class="text-center">
+                                                        <td class="text-center w-25">
                                                             <form
                                                                 action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
                                                                 method="post">
@@ -519,7 +519,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <!-- Bu div jadvalni to‘liq moslashuvchan qiladi -->
+                                            <!-- Bu div jadvalni to‘liq moslashuvchan qiladi saada-->
                                             <table id="dataTable"
                                                    class="table table-bordered table-striped dataTable dtr-inline"
                                                    user="grid" aria-describedby="dataTable_info">
@@ -538,9 +538,9 @@
                                                 @php
                                                     $i = 0;
                                                 @endphp
-                                                {{--                                                {{ dd($user_documents) }}--}}
+
                                                 @foreach($user_documents as $userdoc)
-                                                    {{ $userdoc->status }}
+
                                                     @php
                                                         $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
                                                         $previous = $userdoc->pre($userdoc->id, $status->id);
