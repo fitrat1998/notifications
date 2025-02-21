@@ -70,7 +70,7 @@ class DoneUserDocsController extends Controller
                     'userdocs_id' => intval($request->userdocs_id),
                     'comment' => $request->comment,
                     'deadline' => NOW(),
-                    'status' => "waiting",
+                    'status' => "accepted",
                     'step' => 0,
                     'report' => 'empty',
                 ]);
@@ -113,7 +113,7 @@ class DoneUserDocsController extends Controller
                     'userdocs_id' => intval($request->userdocs_id),
                     'comment' => $request->comment,
                     'deadline' => NOW(),
-                    'status' => "waiting",
+                    'status' => "accepted",
                     'step' => 0,
                     'report' => 'empty',
                 ]);

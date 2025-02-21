@@ -163,6 +163,7 @@ class UserDocuments extends Model
         $data = DB::table('userdocs_has_departments')
             ->where('userdocs_id', $userdocs_id)
             ->where('department_id', $department_id)
+//            ->where('user_id', 0)
             ->first();
 
         return $data;
@@ -350,4 +351,11 @@ class UserDocuments extends Model
 
         return User::whereIn('id', $done)->get();
     }
+
+    public function doneuserdocs($id)
+    {
+        return DoneUserDocs::where('userdocs_id', $id)->first();
+    }
+
+
 }

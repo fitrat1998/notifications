@@ -176,7 +176,6 @@ class UserDocumentsController extends Controller
         $users_ids = $document->pluck('user_id');
 
         $users = User::whereIn('id', $users_ids)
-            ->select('id', 'firstname', 'lastname', 'middlename')
             ->get();
 
         $pdf_author = auth()->user()->id;

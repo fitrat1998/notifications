@@ -168,11 +168,13 @@ class RecivedDocumentsController extends Controller
 
         $userdocs = UserDocuments::find($request->reject_id);
 
+
         $departments = DB::table('userdocs_has_departments')
             ->where('userdocs_id', $userdocs->id)
             ->where('department_id', $request->department_id)
             ->update([
                 'status' => 'cancelled',
+                'created_at' => NOW(),
                 'updated_at' => NOW(),
             ]);
 
@@ -183,9 +185,41 @@ class RecivedDocumentsController extends Controller
             'updated_at' => NOW(),
         ]);
 
+        $exists = DoneUserDocs::where('user_id', $userdocs->id)
+            ->where('userdocs_id', $user->id)
+            ->exists();
+
+        try {
+            DB::beginTransaction();
+
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+            if (!$exists) {
+                $doneuserdocs = DoneUserDocs::create([
+                    'user_id' =>  $user->id,
+                    'userdocs_id' => $userdocs->id,
+                    'status' => 'cancelled',
+                    'comment' => 'cancelled',
+                    'report' => $request->comment,
+                    'cancelled_user' => $user->id,
+                    'deadline'  => NOW(),
+                    'step' => 0,
+                    'updated_at' => NOW(),
+                ]);
+            }
+
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('danger', 'Xatolik yuz berdi: ' . $e->getMessage());
+        }
+
+
 //        $departments->delete();
 
-        return redirect()->route('reciveddocuments.index')->with('danger', 'Hujjat qabul qilindi');
+        return redirect()->route('reciveddocuments.index')->with('danger', 'Hujjat rad etildi');
 
 
     }
@@ -218,11 +252,12 @@ class RecivedDocumentsController extends Controller
 
     public function show_release_project($id)
     {
-        $document = DoneUserDocs::where('userdocs_id', $id)->get(); 1;
+        $document = DoneUserDocs::where('userdocs_id', $id)->get();
+        1;
         $users_ids = $document->pluck('user_id');
 
         $users = User::whereIn('id', $users_ids)
-            ->select('id', 'firstname', 'lastname', 'middlename','position')
+            ->select('id', 'firstname', 'lastname', 'middlename', 'position')
             ->get();
 
         $pdf_author = auth()->user()->id;

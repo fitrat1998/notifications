@@ -30,13 +30,13 @@ class DoneUserDocs extends Model
         $userdocs = UserDocuments::find($id);
 
         if ($userdocs) {
-            $doument = DocumentType::find($userdocs->documenttype_id);
+            $document = DocumentType::find($userdocs->documenttype_id);
         } else {
-            $doument = null;
+            $document = null;
         }
 
 
-        return ['document' => $doument, 'old' => $userdocs];
+        return ['document' => $document, 'old' => $userdocs];
     }
 
     public function files()
@@ -261,12 +261,13 @@ class DoneUserDocs extends Model
         $doc = DoneUserDocs::find($id);
 
         $status = DB::table('userdocs_has_departments')
-            ->where('userdocs_id',$doc->userdocs_id)
-            ->where('updated_at',$doc->created_at)
+            ->where('userdocs_id', $doc->userdocs_id)
+            ->where('updated_at', $doc->created_at)
             ->first();
 
         return $status;
     }
+
 
 
 }

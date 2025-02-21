@@ -83,135 +83,146 @@
                                                         $previous = $userdoc->pre($userdoc->id, $status->id);
                                                     @endphp
 
-                                                    <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $userdoc->documenttype->name }}</td>
-                                                        <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
-                                                            - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
-                                                        <td>
-                                                            @if($status->status == 'accepted')
-                                                                <span
-                                                                    class="btn btn-success">Qabul qilingan</span>
-                                                            @elseif($status->status == 'waiting')
-                                                                <span class="btn btn-warning">Kutilmoqda</span>
-                                                            @else
-                                                                <span
-                                                                    class="btn btn-danger">{{ $status->status }}</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $userdoc->created_at->format('d.m.Y') }}</td>
-                                                        <td>
-                                                            @if($userdoc->finish_doc($userdoc->id))
-                                                                @if(!$userdoc->exists_release($userdoc->id))
-                                                                    <a href="#" class="btn btn-primary"
-                                                                       data-bs-toggle="modal"
-                                                                       data-bs-target="#releaseModal">
-                                                                        Buyruq chiqarish
-                                                                    </a>
-                                                                    <!-- Modal -->
-                                                                    <div class="modal fade" id="releaseModal"
-                                                                         tabindex="-1"
-                                                                         aria-labelledby="releaseModalLabel"
-                                                                         aria-hidden="true">
-                                                                        <div class="modal-dialog">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title"
-                                                                                        id="releaseModalLabel">Buyruq
-                                                                                        chiqarish</h5>
-                                                                                    <button type="button"
-                                                                                            class="btn-close"
-                                                                                            data-bs-dismiss="modal"
-                                                                                            aria-label="Close"></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <!-- Forma -->
-                                                                                    <form id="releaseForm"
-                                                                                          action="{{ route('release.store') }}"
-                                                                                          method="POST">
-                                                                                        @csrf
-                                                                                        <input type="hidden"
-                                                                                               name="release_id"
-                                                                                               value="{{ $userdoc->id }}">
 
-                                                                                        <div class="mb-3">
-                                                                                            <label for="command_text"
-                                                                                                   class="form-label">Buyruq
-                                                                                                raqami</label>
-                                                                                            <input class="form-control"
-                                                                                                   type="number"
-                                                                                                   name="number"
-                                                                                                   id="commandNumber"
-                                                                                                   required>
-                                                                                        </div>
-
-                                                                                        <div class="modal-footer">
+{{--                                                    @if($status->status == 'accepted' && $status->status == 'waiting')--}}
+                                                        @if($userdoc->show($status->id,$userdoc->id))
+                                                            <tr>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $userdoc->documenttype->name }}</td>
+                                                                <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
+                                                                    - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
+                                                                <td>
+                                                                    @if($status->status == 'accepted')
+                                                                        <span
+                                                                            class="btn btn-success">Qabul qilingan</span>
+                                                                    @elseif($status->status == 'waiting')
+                                                                        <span class="btn btn-warning">Kutilmoqda</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="btn btn-danger">{{ $status->status }}</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $userdoc->created_at->format('d.m.Y') }}</td>
+                                                                <td>
+                                                                    @if($userdoc->finish_doc($userdoc->id))
+                                                                        @if(!$userdoc->exists_release($userdoc->id))
+                                                                            <a href="#" class="btn btn-primary"
+                                                                               data-bs-toggle="modal"
+                                                                               data-bs-target="#releaseModal">
+                                                                                Buyruq chiqarish
+                                                                            </a>
+                                                                            <!-- Modal -->
+                                                                            <div class="modal fade" id="releaseModal"
+                                                                                 tabindex="-1"
+                                                                                 aria-labelledby="releaseModalLabel"
+                                                                                 aria-hidden="true">
+                                                                                <div class="modal-dialog">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title"
+                                                                                                id="releaseModalLabel">
+                                                                                                Buyruq
+                                                                                                chiqarish</h5>
                                                                                             <button type="button"
-                                                                                                    class="btn btn-secondary"
-                                                                                                    data-bs-dismiss="modal">
-                                                                                                Bekor qilish
-                                                                                            </button>
-                                                                                            <button type="submit"
-                                                                                                    class="btn btn-primary"
-                                                                                                    id="submitBtn">
-                                                                                                Chiqarish
-                                                                                            </button>
+                                                                                                    class="btn-close"
+                                                                                                    data-bs-dismiss="modal"
+                                                                                                    aria-label="Close"></button>
                                                                                         </div>
-                                                                                    </form>
+                                                                                        <div class="modal-body">
+                                                                                            <!-- Forma -->
+                                                                                            <form id="releaseForm"
+                                                                                                  action="{{ route('release.store') }}"
+                                                                                                  method="POST">
+                                                                                                @csrf
+                                                                                                <input type="hidden"
+                                                                                                       name="release_id"
+                                                                                                       value="{{ $userdoc->id }}">
+
+                                                                                                <div class="mb-3">
+                                                                                                    <label
+                                                                                                        for="command_text"
+                                                                                                        class="form-label">Buyruq
+                                                                                                        raqami</label>
+                                                                                                    <input
+                                                                                                        class="form-control"
+                                                                                                        type="number"
+                                                                                                        name="number"
+                                                                                                        id="commandNumber"
+                                                                                                        required>
+                                                                                                </div>
+
+                                                                                                <div
+                                                                                                    class="modal-footer">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn btn-secondary"
+                                                                                                        data-bs-dismiss="modal">
+                                                                                                        Bekor qilish
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        type="submit"
+                                                                                                        class="btn btn-primary"
+                                                                                                        id="submitBtn">
+                                                                                                        Chiqarish
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @else
-                                                                    <a href="{{ route('release.show', ['release' => $userdoc->id]) }}"
-                                                                       class="btn btn-primary">
-                                                                        Buyruq chiqarish
-                                                                    </a>
-                                                                @endif
-                                                            @else
-                                                                Kutilmoqda
-                                                            @endif
-                                                        </td>
-                                                        <td class="text-center w-25">
-                                                            <form
-                                                                action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                <div class="btn-category">
-                                                                    <a href="{{ route('reciveddocuments.show_release_project', $userdoc->id) }}"
-                                                                       class="btn btn-primary btn-sm"
-                                                                       title="Batafsil">
-                                                                        <i class="fa-solid fa-eye"></i>
-                                                                    </a>
-                                                                    @if($userdoc->status != 'cancelled')
-                                                                        @if($userdoc->checkdone($userdoc->id) == 'done')
-                                                                            <a href="{{ route('doneuserdocs.view', $userdoc->id) }}"
-                                                                               class="btn btn-primary btn-sm"
-                                                                               title="Tasdiqlangan hujjatni ko'rish">
-                                                                                <i class="fa-solid fa-circle-info"></i>
-                                                                            </a>
-                                                                        @elseif($userdoc->checkdone($userdoc->id) == 'cancel')
-                                                                            <a href=""
-                                                                               class="btn btn-danger btn-sm">
-                                                                                <i class="fa-solid fa-xmark"></i>
-                                                                            </a>
                                                                         @else
-                                                                            <a href="{{ route('reciveddocuments.show', $userdoc->id) }}"
-                                                                               class="btn btn-success btn-sm"
-                                                                               title="Hujjatni qabul qilish">
-                                                                                <i class="fa-solid fa-square-check"></i>
-                                                                            </a>
-                                                                            <a href="{{ route('reciveddocuments.reject', $userdoc->id) }}"
-                                                                               class="btn btn-danger btn-sm">
-                                                                                <i class="fa-solid fa-ban"
-                                                                                   title="Hujjatni rad qilish"></i>
+                                                                            <a href="{{ route('release.show', ['release' => $userdoc->id]) }}"
+                                                                               class="btn btn-primary">
+                                                                                Buyruq chiqarish
                                                                             </a>
                                                                         @endif
+                                                                    @else
+                                                                        Kutilmoqda
                                                                     @endif
-                                                                </div>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
+                                                                </td>
+                                                                <td class="text-center w-25">
+                                                                    <form
+                                                                        action="{{ route('doneuserdocs.destroy', $userdoc->id) }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        <div class="btn-category">
+                                                                            <a href="{{ route('reciveddocuments.show_release_project', $userdoc->id) }}"
+                                                                               class="btn btn-primary btn-sm"
+                                                                               title="Batafsil">
+                                                                                <i class="fa-solid fa-eye"></i>
+                                                                            </a>
+                                                                            @if($userdoc->status != 'cancelled')
+                                                                                @if($userdoc->checkdone($userdoc->id) == 'done')
+                                                                                    <a href="{{ route('doneuserdocs.view', $userdoc->id) }}"
+                                                                                       class="btn btn-primary btn-sm"
+                                                                                       title="Tasdiqlangan hujjatni ko'rish">
+                                                                                        <i class="fa-solid fa-circle-info"></i>
+                                                                                    </a>
+                                                                                @elseif($userdoc->checkdone($userdoc->id) == 'cancel')
+                                                                                    <a href=""
+                                                                                       class="btn btn-danger btn-sm">
+                                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                                    </a>
+                                                                                @else
+                                                                                    <a href="{{ route('reciveddocuments.show', $userdoc->id) }}"
+                                                                                       class="btn btn-success btn-sm"
+                                                                                       title="Hujjatni qabul qilish">
+                                                                                        <i class="fa-solid fa-square-check"></i>
+                                                                                    </a>
+                                                                                    <a href="{{ route('reciveddocuments.reject', $userdoc->id) }}"
+                                                                                       class="btn btn-danger btn-sm">
+                                                                                        <i class="fa-solid fa-ban"
+                                                                                           title="Hujjatni rad qilish"></i>
+                                                                                    </a>
+                                                                                @endif
+                                                                            @endif
+                                                                        </div>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+{{--                                                    @endif--}}
 
 
                                                 @endforeach
@@ -542,13 +553,14 @@
                                                 @foreach($user_documents as $userdoc)
 
                                                     @php
+                                                    $i++;
                                                         $status = $userdoc->status($userdoc->id, auth()->user()->department_id);
                                                         $previous = $userdoc->pre($userdoc->id, $status->id);
 
                                                     @endphp
                                                     @if($status->status == 'cancelled')
                                                         <tr>
-                                                            <td>{{ $i }}</td>
+                                                            <td>{{ $loop->iteration}}</td>
                                                             <td>{{ $userdoc->documenttype->name }}</td>
                                                             <td class="w-25">{{ $userdoc->author->position ?? 'mavjud emas'}}
                                                                 - {{ $userdoc->author->lastname ?? 'mavjud emas' }} {{ $userdoc->author->firstname ?? 'mavjud emas'}}</td>
