@@ -71,6 +71,8 @@
                                             $modals = [];
                                         @endphp
 
+{{--                                        {{ dd($departments) }}--}}
+
                                         <div class="stepper-wrapper">
                                             @foreach($departments as $index => $department)
                                                 @php
@@ -81,7 +83,7 @@
                                                         default => 'active'
                                                     };
                                                     $author = $document->info_user($current_status->user_id ?? null);
-                                                    $iteration = $index + 1; // Har doim department indeksiga qarab iterationni qo'yamiz
+                                                    $iteration = $index + 1;
                                                 @endphp
 
                                                 <div class="stepper-item {{ $step_class }}">

@@ -61,7 +61,12 @@ class UserDocuments extends Model
         $info = UserDocuments::find($id);
         $author = $info ? User::find($info->cancelled_user) : null;
 
-        $departments = Department::whereIn('id', $status->pluck('department_id'))->get();
+        $departmentIds = $status->pluck('department_id')->toArray();
+
+        $departments = Department::whereIn('id', $departmentIds)
+            ->orderByRaw('FIELD(id, ' . implode(',', $departmentIds) . ')')
+            ->get();
+
 
         return [$status, $departments, $author, $info];
     }
@@ -362,10 +367,9 @@ class UserDocuments extends Model
     {
 
         return DB::table('done_user_docs_files')
-            ->where('done_user_docs_id',$id)
+            ->where('done_user_docs_id', $id)
             ->get();
     }
-
 
 
 }

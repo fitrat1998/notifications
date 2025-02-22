@@ -89,6 +89,9 @@ class DocumentTypeController extends Controller
         $documenttype = DocumentType::findOrFail($id);
 
 
+//        dd($request);
+
+
         $depart_id = DB::table('confirm_departments_map')->where('documenttype_id', $documenttype->id)->delete();
 
         if ($request->order) {
