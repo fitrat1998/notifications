@@ -358,5 +358,14 @@ class UserDocuments extends Model
             ->get();
     }
 
+    public function doneuserdocs_files($id)
+    {
+
+        return DB::table('done_user_docs_files')
+            ->where('done_user_docs_id',$id)
+            ->get();
+    }
+
+
 
 }

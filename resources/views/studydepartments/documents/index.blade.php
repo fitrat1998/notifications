@@ -112,33 +112,48 @@
 
                                                 @if ($done_doc)
                                                     @php
-                                                        $modals[] = "
-                                                            <div class='modal fade' id='stepModal{$document->id}-{$department->id}-{$iteration}'
-                                                                tabindex='-1' aria-labelledby='modalLabel{$document->id}-{$department->id}-{$iteration}'
-                                                                aria-hidden='true'>
-                                                                <div class='modal-dialog'>
-                                                                    <div class='modal-content'>
-                                                                        <div class='modal-header'>
-                                                                            <h5 class='modal-title' id='modalLabel{$document->id}-{$department->id}-{$iteration}'>
-                                                                                Step $iteration tafsilotlari
-                                                                            </h5>
-                                                                            <button type='button' class='btn-close'
-                                                                                    data-bs-dismiss='modal'
-                                                                                    aria-label='Close'></button>
-                                                                        </div>
-                                                                        <div class='modal-body'>
-                                                                            <p><strong>Bo'lim:</strong> {$department->name}</p>
-                                                                            <p><strong>Qaytarilgan sababi:</strong> {{ $done_doc->report ? ucfirst($done_doc->report) : 'Mavjud emas' }}</p>
-                                                                            <p><strong>Ma'sul shaxs:</strong> " . ($done_doc->user ? $done_doc->user->firstname . ' ' . $done_doc->user->lastname : 'Mavjud emas') . "</p>
-                                                                             <p><strong>Qaytarilgan vaqti:</strong> {$done_doc->updated_at->format('d.m.Y')}</p>
-                                                                          </div>
-                                                                        <div class='modal-footer'>
-                                                                            <button type='button' class='btn btn-secondary'
-                                                                                    data-bs-dismiss='modal'>Yopish</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>";
+                                                   $modals[] = "
+<div class='modal fade' id='stepModal{$document->id}-{$department->id}-{$iteration}'
+     tabindex='-1' aria-labelledby='modalLabel{$document->id}-{$department->id}-{$iteration}'
+     aria-hidden='true'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title' id='modalLabel{$document->id}-{$department->id}-{$iteration}'>
+                    Step $iteration tafsilotlari
+                </h5>
+                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+            </div>
+            <div class='modal-body'>
+                <p><strong>Bo'lim:</strong> {$department->name}</p>
+
+                <p><strong>Izoh:</strong> " . (($done_doc->comment !== 'cancelled' && !empty($done_doc->comment))
+                    ? ucfirst($done_doc->comment) : 'Mavjud emas') . "</p>
+
+                <p><strong>Ma'sul shaxs:</strong> " . ($done_doc->user ? $done_doc->user->firstname . ' ' . $done_doc->user->lastname : 'Mavjud emas') . "</p>
+
+                <p><strong>Yaratilgan vaqti:</strong> {$done_doc->updated_at->format('d.m.Y')}</p>
+
+                <p><strong>Qaytarilgan sababi:</strong> " . ((!empty($done_doc->report) && $done_doc->report !== 'empty')
+                    ? ucfirst($done_doc->report) : 'Mavjud emas') . "</p>
+
+                <p><strong>Ilova qilingan fayl.</strong>
+                " . ( $document->doneuserdocs_files($done_doc->id)->isNotEmpty()
+                    ? implode('', $document->doneuserdocs_files($done_doc->id)->map(function($file) {
+                        return "<a href='" . route('doneuserdocs.download', $file->name) . "' class='btn btn-primary'>{$file->title}</a>";
+                    })->toArray())
+                    : '<p>Fayl mavjud emas.</p>') . "</p>
+            </div>
+            <div class='modal-footer'>
+                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Yopish</button>
+            </div>
+        </div>
+    </div>
+</div>";
+
+
+
+
                                                     @endphp
                                                 @endif
                                             @endforeach

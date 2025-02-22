@@ -79,8 +79,8 @@ class DoneUserDocsController extends Controller
                     ->where('userdocs_id', $request->userdocs_id)
                     ->where('department_id', $user->department_id)
                     ->update([
-                        'user_id'    => $user->id,
-                        'status'     => 'accepted',
+                        'user_id' => $user->id,
+                        'status' => 'accepted',
                         'created_at' => NOW(),
                         'updated_at' => NOW()
                     ]);
@@ -93,10 +93,13 @@ class DoneUserDocsController extends Controller
                     $filePath = public_path('storage/doneuserdocs/' . $name);
                     $file->move(public_path('storage/doneuserdocs'), $name);
 
+//                    dd($name);
+
                     DB::table('done_user_docs_files')->insert([
                         'userdocs_id' => intval($request->userdocs_id),
                         'done_user_docs_id' => $done,
                         'name' => $name,
+                        'status' => 'accepted',
                         'title' => $file->getClientOriginalName(),
                         'created_at' => NOW(),
                         'updated_at' => NOW()
@@ -123,7 +126,7 @@ class DoneUserDocsController extends Controller
                     ->where('department_id', $user->department_id)
                     ->update([
                         'status' => 'accepted',
-                         'user_id'    => $user->id,
+                        'user_id' => $user->id,
                         'created_at' => NOW(),
                         'updated_at' => NOW()
                     ]);
@@ -161,6 +164,19 @@ class DoneUserDocsController extends Controller
 
         return view('studydepartments.reciveddocuments.done', compact('userdocs', 'id'));
     }
+
+//    public function download($filename)
+//    {
+//        $filePath = public_path('storage/doneuserdocs/' . $filename);
+//
+////        dd($filePath);
+//
+//        if (file_exists($filePath)) {
+//            return response()->download($filePath);
+//        }
+//
+//        return abort(404, 'File not found.');
+//    }
 
     /**
      * Show the form for editing the specified resource.

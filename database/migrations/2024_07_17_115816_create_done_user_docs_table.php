@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->unsignedBigInteger('userdocs_id');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->string('deadline');
             $table->string('status')->default('waiting');
             $table->string('report');

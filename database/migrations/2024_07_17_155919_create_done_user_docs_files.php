@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_docs')->nullable();
             $table->unsignedBigInteger('done_user_docs_id')->nullable();
             $table->string('name');
+            $table->string('title');
             $table->string('status')->default('waiting');
             $table->timestamps();
             $table->softDeletes();
