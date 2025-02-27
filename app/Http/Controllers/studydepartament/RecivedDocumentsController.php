@@ -48,10 +48,6 @@ class RecivedDocumentsController extends Controller
 
         $done_docs = DoneUserDocs::whereIn('userdocs_id', $docs_id)->pluck('userdocs_id')->toArray();
 
-        $count_docs = UserDocuments::whereNotIn('id', $done_docs)
-            ->where('status', '!=', 'cancelled')
-            ->count();
-
         $users = User::where('department_id', '!=', '')
 //            ->where('department_id', '!=', $user->department_id)
             ->pluck('id');
@@ -69,9 +65,15 @@ class RecivedDocumentsController extends Controller
             ->distinct('id')
             ->pluck('userdocs_id');
 
+
         $user_documents = UserDocuments::whereIn('id', $user_documents_id)
             ->orderBy('id', 'desc')
             ->get();
+
+
+         $count_docs = UserDocuments::whereNotIn('id', $done_docs)
+            ->where('status', '!=', 'cancelled')
+            ->count();
 
 
         return view('studydepartments.reciveddocuments.index', compact('count', 'count_docs', 'user_documents'));
@@ -215,9 +217,6 @@ class RecivedDocumentsController extends Controller
             DB::rollback();
             return redirect()->back()->with('danger', 'Xatolik yuz berdi: ' . $e->getMessage());
         }
-
-
-//        $departments->delete();
 
         return redirect()->route('reciveddocuments.index')->with('danger', 'Hujjat rad etildi');
 

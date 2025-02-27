@@ -140,6 +140,7 @@ class HomeController extends Controller
 //                ->whereBetween('created_at', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
                 ->count();
 
+
             return view('admin.index', compact(
                 'departments_count',
                 'users_count',
@@ -153,7 +154,7 @@ class HomeController extends Controller
                 'waiting_userdocs',
                 'accepted_userdocs',
                 'cancelled_userdocs',
-                'mix_userdocs'
+                'mix_userdocs',
             ));
         } else {
 
@@ -234,12 +235,12 @@ class HomeController extends Controller
 
 
             $created_ids = DB::table('userdocs_has_departments')
-                ->where('department_id',$user->department_id)
+                ->where('department_id', $user->department_id)
                 ->pluck('userdocs_id');
 
 
             $created_docs = UserDocuments::whereIn('id', $created_ids)
-                ->where('user_id','=', $user->id)
+                ->where('user_id', '=', $user->id)
 //                ->whereBetween('created_at', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
                 ->get();
 
@@ -250,7 +251,6 @@ class HomeController extends Controller
             $accepted_docs = DoneUserDocs::whereIn('userdocs_id', $created_docs_id)
 //                ->whereBetween('created_at', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
                 ->get();
-
 
 
 //            dd($accepted_docs);
@@ -293,7 +293,6 @@ class HomeController extends Controller
                 ->pluck('task_id');
 
 
-
             $accepted_my_tasks = SendTask::whereIn('id', $accepted_my_tasks_id)
 //                ->whereBetween('created_at', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
                 ->count();
@@ -314,6 +313,23 @@ class HomeController extends Controller
                 ->whereBetween('created_at', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
                 ->count();
 
+            $department_id = auth()->user()->department_id;
+
+            $documenttype_id = DB::table('confirm_departments_map')
+                ->where('department_id', $user->department_id)
+                ->pluck('documenttype_id');
+
+
+            $user_documents_id = DB::table('userdocs_has_departments')
+                ->where('department_id', $department_id)
+                ->distinct('id')
+                ->pluck('userdocs_id');
+
+
+            $user_documents = UserDocuments::whereIn('id', $user_documents_id)
+                ->orderBy('id', 'desc')
+                ->get();
+
             return view('studydepartments.index', compact(
                 'waiting',
                 'accepted',
@@ -329,7 +345,8 @@ class HomeController extends Controller
                 'cancelled_my_docs',
                 'accepted_my_tasks',
                 'waiting_my_tasks',
-                'expired'
+                'expired',
+                'user_documents'
             ));
         }
     }

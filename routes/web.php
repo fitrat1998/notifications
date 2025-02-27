@@ -24,7 +24,6 @@ use App\Http\Controllers\UserController;
 use App\Models\Release;
 use Illuminate\Support\Facades\Route;
 
-
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

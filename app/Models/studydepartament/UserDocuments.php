@@ -174,6 +174,36 @@ class UserDocuments extends Model
         return $data;
     }
 
+    public function counts($userdocs_id)
+    {
+        $department_id = auth()->user()->department_id;
+
+        $records = DB::table('userdocs_has_departments')
+            ->where('userdocs_id', $userdocs_id)
+            ->orderBy('id', 'asc')
+            ->get();
+
+        if ($records->contains('status', 'canceled')) {
+            return null;
+        }
+
+
+        $waitingRecords = $records->where('department_id', $department_id)
+            ->where('status', 'waiting');
+
+
+        foreach ($waitingRecords as $waiting) {
+
+            $previousRecord = $records->where('id', '<', $waiting->id)->last();
+
+            if (!$previousRecord || $previousRecord->status === 'accepted') {
+                return $waiting;
+            }
+        }
+
+        return null;
+    }
+
 
     public function pre($userdocs_id, $status_id)
     {
