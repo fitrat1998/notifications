@@ -377,8 +377,10 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{ asset('plugins/toastr/toastr.min.js')}}"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+ <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
 
 <script src="{{ asset('plugins/my/self.js')}}"></script>
@@ -392,10 +394,7 @@
 <script src="{{ asset('dist/js/pages/dashboard.js')}}"></script>
 <script>
     $.widget.bridge('uibutton', $.ui.button)
-<<<<<<< HEAD
-=======
 
->>>>>>> 6bda4a5 (Initial commit)
     table = new DataTable('#dataTable');
 
     duallist = $('.duallistbox').bootstrapDualListbox();
@@ -479,18 +478,14 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .then(editor => {
-                console.log(editor);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    tinymce.init({
+        selector: '#editor',
+        plugins: 'advlist autolink lists link image charmap preview',
+        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
+        height: 300
     });
-
 </script>
+
 <script>
     $(document).ready(function () {
 
