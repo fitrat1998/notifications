@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\FacultyController;
 use App\Http\Controllers\admin\SendTaskController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\documenttype\DocumentTypeController;
 use App\Http\Controllers\FilterDateController;
 use App\Http\Controllers\FilteredPagesController;
@@ -42,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::resource('faculty', FacultyController::class);
+
+    Route::resource('branches', BranchController::class);
 
 
     Route::resource('sendtask', SendTaskController::class);

@@ -11,104 +11,114 @@
                 </a>
             </li>
 
-           <li class="nav-item {{ Request::is('sendtask*') || Request::is('reciveddocuments/create') || Request::is('reciveddocuments/accepted/done') || Request::is('reciveddocuments/cancelled/done') ? 'menu-open' : '' }}">
-    <a href="#" class="nav-link {{ Request::is('sendtask*') || Request::is('reciveddocuments/create') || Request::is('reciveddocuments/accepted/done') || Request::is('reciveddocuments/cancelled/done') ? 'active' : '' }}">
-        <i class="fa fa-thumbtack"></i>
-        <p>
-            Topshiriq
-            <i class="right fas fa-angle-left"></i>
-        </p>
-    </a>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('sendtask.create') }}"
-               class="nav-link {{ Request::is('sendtask/create') ? 'active' : '' }}">
-                <i class="fa fa-paper-plane"></i>
-                <p>Yuborish</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('sendtask.index') }}"
-               class="nav-link {{ Request::is('sendtask') ? 'active' : '' }}">
-                <i class="fa fa-file-import"></i>
-                <p>Yuborilganlar</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('reciveddocuments.create') }}"
-               class="nav-link {{ Request::is('reciveddocuments/create') ? 'active' : '' }}">
-                <i class="fa-brands fa-hacker-news"></i>
-                <p>Yangi kelib tushgan</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('reciveddocuments.accepted_done') }}"
-               class="nav-link {{ Request::is('reciveddocuments/accepted/done') ? 'active' : '' }}">
-                <i class="fa-solid fa-check-to-slot"></i>
-                <p>Qabul qilingan</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('reciveddocuments.cancelled_done') }}"
-               class="nav-link {{ Request::is('reciveddocuments/cancelled/done') ? 'active' : '' }}">
-                <i class="fa-solid fa-ban"></i>
-                <p>Rad qilingan</p>
-            </a>
-        </li>
-    </ul>
-</li>
+            <li class="nav-item {{ Request::is('sendtask*') || Request::is('reciveddocuments/create') || Request::is('reciveddocuments/accepted/done') || Request::is('reciveddocuments/cancelled/done') ? 'menu-open' : '' }}">
+                <a href="#"
+                   class="nav-link {{ Request::is('sendtask*') || Request::is('reciveddocuments/create') || Request::is('reciveddocuments/accepted/done') || Request::is('reciveddocuments/cancelled/done') ? 'active' : '' }}">
+                    <i class="fa fa-thumbtack"></i>
+                    <p>
+                        Topshiriq
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('sendtask.create') }}"
+                           class="nav-link {{ Request::is('sendtask/create') ? 'active' : '' }}">
+                            <i class="fa fa-paper-plane"></i>
+                            <p>Yuborish</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sendtask.index') }}"
+                           class="nav-link {{ Request::is('sendtask') ? 'active' : '' }}">
+                            <i class="fa fa-file-import"></i>
+                            <p>Yuborilganlar</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('reciveddocuments.create') }}"
+                           class="nav-link {{ Request::is('reciveddocuments/create') ? 'active' : '' }}">
+                            <i class="fa-brands fa-hacker-news"></i>
+                            <p>Yangi kelib tushgan</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('reciveddocuments.accepted_done') }}"
+                           class="nav-link {{ Request::is('reciveddocuments/accepted/done') ? 'active' : '' }}">
+                            <i class="fa-solid fa-check-to-slot"></i>
+                            <p>Qabul qilingan</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('reciveddocuments.cancelled_done') }}"
+                           class="nav-link {{ Request::is('reciveddocuments/cancelled/done') ? 'active' : '' }}">
+                            <i class="fa-solid fa-ban"></i>
+                            <p>Rad qilingan</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
 
             <li class="nav-item {{ Request::is('permission*') || Request::is('role*') || Request::is('user*') || Request::is('departments*') ? 'menu-open' : '' }}">
-    <a href="#" class="nav-link {{ Request::is('permission*') || Request::is('role*') || Request::is('user*') || Request::is('departments*') ? 'active' : '' }}">
-        <i class="fa-solid fa-gears"></i>
-        <p>
-            Tuzilma
-            <i class="right fas fa-angle-left"></i>
-        </p>
-    </a>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('permissions.index') }}"
-               class="nav-link {{ Request::is('permissions*') ? 'active' : '' }}">
-                <i class="fa-solid fa-key"></i>
-                <p>Ruxsatlar</p>
-            </a>
-        </li>
+                <a href="#"
+                   class="nav-link {{ Request::is('permission*') || Request::is('role*') || Request::is('user*') || Request::is('departments*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-gears"></i>
+                    <p>
+                        Tuzilma
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('permissions.index') }}"
+                           class="nav-link {{ Request::is('permissions*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-key"></i>
+                            <p>Ruxsatlar</p>
+                        </a>
+                    </li>
 
-        <li class="nav-item">
-            <a href="{{ route('roles.index') }}"
-               class="nav-link {{ Request::is('roles*') ? 'active' : '' }}">
-                <i class="fa-solid fa-users-gear"></i>
-                <p>Rollar</p>
-            </a>
-        </li>
+                    <li class="nav-item">
+                        <a href="{{ route('roles.index') }}"
+                           class="nav-link {{ Request::is('roles*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-users-gear"></i>
+                            <p>Rollar</p>
+                        </a>
+                    </li>
 
-        <li class="nav-item">
-            <a href="{{ route('users.index') }}"
-               class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
-                <i class="fa fa-user"></i>
-                <p>Foydalanuvchilar</p>
-            </a>
-        </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}"
+                           class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
+                            <i class="fa fa-user"></i>
+                            <p>Foydalanuvchilar</p>
+                        </a>
+                    </li>
 
-        <li class="nav-item">
-            <a href="{{ route('departments.index') }}"
-               class="nav-link {{ Request::is('departments*') ? 'active' : '' }}">
-                <i class="fa fa-list"></i>
-                <p>Bo'limlar</p>
-            </a>
-        </li>
+                    <li class="nav-item">
+                        <a href="{{ route('departments.index') }}"
+                           class="nav-link {{ Request::is('departments*') ? 'active' : '' }}">
+                            <i class="fa fa-list"></i>
+                            <p>Bo'limlar</p>
+                        </a>
+                    </li>
 
-        <li class="nav-item">
-            <a href="{{ route('documenttypes.index') }}"
-               class="nav-link {{ Request::is('documenttypes*') ? 'active' : '' }}">
-                <i class="fa-solid fa-folder-tree"></i>
-                <p>Hujjat turi</p>
-            </a>
-        </li>
-    </ul>
-</li>
+                      <li class="nav-item">
+                        <a href="{{ route('branches.index') }}"
+                           class="nav-link {{ Request::is('branches*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-code-branch"></i>
+                            <p>Kafedralar</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('documenttypes.index') }}"
+                           class="nav-link {{ Request::is('documenttypes*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-folder-tree"></i>
+                            <p>Hujjat turi</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
     @endcanany
 </nav>
