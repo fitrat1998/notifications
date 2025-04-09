@@ -11,18 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('final_step_files', function (Blueprint $table) {
-
-            $table->integer('user_id');
-            $table->integer('department_id');
-            $table->string('file');
+        Schema::create('semesters', function (Blueprint $table) {
+             $table->id();
             $table->string('name');
-            $table->integer('userdocs_id');
-            $table->integer('doctype_id');
-            $table->longText('comment');
-            $table->timestamps();
+            $table->integer('user_id');
             $table->softDeletes();
-
+            $table->timestamps();
         });
     }
 
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('final_step_files');
+        Schema::dropIfExists('semesters');
     }
 };

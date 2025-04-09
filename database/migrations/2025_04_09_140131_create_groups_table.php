@@ -10,16 +10,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('final_steps', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('department_id');
-            $table->string('file');
+        Schema::create('groups', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
-            $table->integer('userdocs_id');
-            $table->integer('doctype_id');
-            $table->longText('comment');
-            $table->timestamps();
+            $table->integer('user_id');
+            $table->unsignedBigInteger('direction_id');
             $table->softDeletes();
+            $table->timestamps();
+
+            $table->foreign('direction_id')
+                ->references('id')
+                ->on('directions')
+                ->onDelete('cascade');
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('final_steps');
+        Schema::dropIfExists('groups');
     }
 };

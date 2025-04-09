@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Branch extends Model
+class Semester extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name','user_id','department_id'];
+    protected $fillable = ['name', 'user_id'];
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
-
 }

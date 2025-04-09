@@ -102,11 +102,43 @@
                         </a>
                     </li>
 
-                      <li class="nav-item">
+                    <li class="nav-item">
+                        <a href="{{ route('faculty.index') }}"
+                           class="nav-link {{ Request::is('faculty*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-building"></i>
+                            <p>Fakultetlar</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('directions.index') }}"
+                           class="nav-link {{ Request::is('directions*') ? 'active' : '' }}">
+                            <i class="fa-regular fa-folder-open"></i>
+                            <p>Yo'nalishlar</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ route('branches.index') }}"
                            class="nav-link {{ Request::is('branches*') ? 'active' : '' }}">
                             <i class="fa-solid fa-code-branch"></i>
                             <p>Kafedralar</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('groups.index') }}"
+                           class="nav-link {{ Request::is('groups*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-users-line"></i>
+                            <p>Guruhlar</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('semesters.index') }}"
+                           class="nav-link {{ Request::is('semesters*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-arrow-up-1-9"></i>
+                            <p>Semesterlar</p>
                         </a>
                     </li>
 

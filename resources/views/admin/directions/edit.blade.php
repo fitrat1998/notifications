@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Bo'limlar</h1>
+                    <h1>Yo'nalishlar</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('index') }}">Bosh sahifa</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">Bo'limlar</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('directions.index') }}">Yo'nalishlar</a></li>
                         <li class="breadcrumb-item active">Tahrirlash</li>
                     </ol>
                 </div>
@@ -31,19 +31,31 @@
                     <!-- /.card-header -->
                     <div class="card-body">
 
-                        <form action="{{ route('branches.update',$branch->id)  }}" method="post">
+                        <form action="{{ route('directions.update',$direction->id)  }}" method="post">
                             @csrf
                             @method('PUT')
+
                             <div class="form-group">
-                                <label>Bo'lim nomi</label>
-                                <input type="text" name="name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('name',$branch->name) }}" required>
+                                <label>Fakultetlar</label>
+                                <select class="form-control rounded-1 select2" name="department_id"
+                                        data-placeholder="Iltimos tanlang" style="width: 100%;">
+                                    <option value="">fakultetni tanlang</option>
+                                    @foreach($faculties as $faculty)
+                                        <option value="{{ $faculty->id }}" {{ $direction->department_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Yo'nalish nomi</label>
+                                <input type="text" name="name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('name',$direction->name) }}" required>
                                 @if($errors->has('name'))
                                     <span class="error invalid-feedback">{{ $errors->first('name') }}</span>
                                 @endif
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success float-right">Saqlash</button>
-                                <a href="{{ route('branches.index') }}" class="btn btn-danger float-left">Bekor qilish</a>
+                                <a href="{{ route('directions.index') }}" class="btn btn-danger float-left">Bekor qilish</a>
                             </div>
                         </form>
 

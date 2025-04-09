@@ -5,14 +5,17 @@ use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\FacultyController;
 use App\Http\Controllers\admin\SendTaskController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\documenttype\DocumentTypeController;
 use App\Http\Controllers\FilterDateController;
 use App\Http\Controllers\FilteredPagesController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\studydepartament\DonetaskController;
 use App\Http\Controllers\studydepartament\DoneUserDocsController;
 use App\Http\Controllers\studydepartament\FinalStepController;
@@ -20,6 +23,7 @@ use App\Http\Controllers\studydepartament\RecivedDocumentsController;
 use App\Http\Controllers\studydepartament\StudyDepartamentController;
 use App\Http\Controllers\studydepartament\UserDashboardController;
 use App\Http\Controllers\studydepartament\UserDocumentsController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TasksTableController;
 use App\Http\Controllers\UserController;
 use App\Models\Release;
@@ -45,6 +49,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('faculty', FacultyController::class);
 
     Route::resource('branches', BranchController::class);
+
+    Route::resource('groups', GroupController::class);
+
+    Route::resource('directions', DirectionController::class);
+
+    Route::resource('semesters', SemesterController::class);
+
+    Route::resource('subjects', SubjectController::class);
 
 
     Route::resource('sendtask', SendTaskController::class);

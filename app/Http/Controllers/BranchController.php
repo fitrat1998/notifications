@@ -15,7 +15,7 @@ class BranchController extends Controller
     {
         $branches = Branch::all();
 
-        return view('admin.branches.index',compact('branches'));
+        return view('admin.branches.index', compact('branches'));
     }
 
     /**
@@ -23,7 +23,8 @@ class BranchController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('admin.branches.add');
     }
 
     /**
@@ -31,7 +32,19 @@ class BranchController extends Controller
      */
     public function store(StoreBranchRequest $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+        ]);
+
+        $user = auth()->user()->id;
+
+        $branch = Branch::create([
+            'name' => $request->name,
+            'user_id' => $user,
+//            'department_id'   => 0,
+        ]);
+
+        return redirect()->route('branches.index')->with('success', 'Kafedra muvaffaqiyatli qo`shildi');
     }
 
     /**
@@ -45,24 +58,47 @@ class BranchController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Branch $branch)
+    public function edit($id)
     {
-        //
+        $branch = Branch::find($id);
+
+        return view('admin.branches.edit', compact('branch'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBranchRequest $request, Branch $branch)
+    public function update(UpdateBranchRequest $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+        ]);
+
+        $branch = Branch::find($id);
+
+        if ($branch) {
+            $branch->update([
+                'name' => $request->name,
+            ]);
+        }
+
+        return redirect()->route('branches.index')->with('success', 'Kafedra muvaffaqiyatli tahrirlandi');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Branch $branch)
+    public function destroy($id)
     {
-        //
+
+        $branch = Branch::find($id);
+
+        if ($branch) {
+            $branch->delete();
+        }
+
+        return redirect()->route('branches.index')->with('success', 'Kafedra muvaffaqiyatli o`chirildi');
     }
 }

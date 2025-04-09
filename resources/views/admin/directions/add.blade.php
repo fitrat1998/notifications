@@ -7,13 +7,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Bo'limlar</h1>
+                    <h1>Kafedra</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('index') }}">Bosh sahifa</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">Bo'limlar</a></li>
-                        <li class="breadcrumb-item active">Tahrirlash</li>
+                        <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">Kafedra</a></li>
+                        <li class="breadcrumb-item active">Qo'shish</li>
                     </ol>
                 </div>
             </div>
@@ -26,17 +26,27 @@
             <div class="col-lg-8 offset-lg-2 col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Tahrirlash</h3>
+                        <h3 class="card-title">Yangi kafedra qo'shish</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
 
-                        <form action="{{ route('branches.update',$branch->id)  }}" method="post">
+                        <form action="{{ route('directions.store') }}" method="post">
                             @csrf
-                            @method('PUT')
                             <div class="form-group">
-                                <label>Bo'lim nomi</label>
-                                <input type="text" name="name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('name',$branch->name) }}" required>
+                                <label>Fakultetlar</label>
+                                <select class="form-control rounded-1 select2" name="department_id"
+                                        data-placeholder="Iltimos tanlang" style="width: 100%;">
+                                    <option value="">fakultetni tanlang</option>
+                                    @foreach($faculties as $faculty)
+                                        <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Kafedra nomi</label>
+                                <input type="text" name="name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('name') }}" required>
                                 @if($errors->has('name'))
                                     <span class="error invalid-feedback">{{ $errors->first('name') }}</span>
                                 @endif
@@ -46,7 +56,6 @@
                                 <a href="{{ route('branches.index') }}" class="btn btn-danger float-left">Bekor qilish</a>
                             </div>
                         </form>
-
 
                     </div>
                 </div>
