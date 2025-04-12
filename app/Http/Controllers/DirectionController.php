@@ -37,7 +37,7 @@ class DirectionController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'department_id' => 'required',
+            'faculty_id' => 'required',
         ]);
 
 
@@ -46,7 +46,7 @@ class DirectionController extends Controller
         $branch = Direction::create([
             'name' => $request->name,
             'user_id' => $user,
-            'department_id' => $request->department_id,
+            'faculty_id' => $request->faculty_id,
         ]);
 
         return redirect()->route('directions.index')->with('success', 'Yo`nalish muvaffaqiyatli qo`shildi');
@@ -80,7 +80,7 @@ class DirectionController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'department_id' => 'required',
+            'faculty_id' => 'required',
         ]);
 
         $direction = Direction::find($id);
@@ -88,7 +88,7 @@ class DirectionController extends Controller
         if ($direction) {
             $direction->update([
                 'name' => $request->name,
-                'department_id' => $request->department_id,
+                'faculty_id' => $request->faculty_id,
             ]);
         }
 

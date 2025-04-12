@@ -40,8 +40,7 @@ class FacultyController extends Controller
 
         if ($create) {
             return redirect()->route('faculty.index')->with('success', 'Fakultet  muvaffaqiyatli qo`shildi');
-        }
-        else {
+        } else {
             return redirect()->back()->with('error', 'Fakultet qo`shishda xatolik yuz berdi');
         }
     }
@@ -49,10 +48,13 @@ class FacultyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Faculty $faculty)
+    public function show($id)
     {
-        //
+        $faculty = Faculty::with('departments')->findOrFail($id);
+
+        return response()->json($faculty);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -60,7 +62,7 @@ class FacultyController extends Controller
     public function edit($id)
     {
         $faculty = Faculty::find($id);
-        return view('admin.faculties.edit',compact('faculty'));
+        return view('admin.faculties.edit', compact('faculty'));
     }
 
     /**
@@ -73,10 +75,9 @@ class FacultyController extends Controller
             'name' => $request->name,
         ]);
 
-         if ($update) {
+        if ($update) {
             return redirect()->route('faculty.index')->with('success', 'Fakultet  muvaffaqiyatli tahrirlandi');
-        }
-        else {
+        } else {
             return redirect()->back()->with('error', 'Fakultet tahrirlashdi xatolik yuz berdi');
         }
     }
@@ -88,10 +89,9 @@ class FacultyController extends Controller
     {
         $delete = Faculty::find($id)->delete();
 
-         if ($delete) {
+        if ($delete) {
             return redirect()->route('faculty.index')->with('success', 'Fakultet  muvaffaqiyatli o`chirildi');
-        }
-        else {
+        } else {
             return redirect()->back()->with('error', 'Fakultet o`chirishda xatolik yuz berdi');
         }
     }

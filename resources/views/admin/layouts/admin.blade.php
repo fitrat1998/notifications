@@ -572,29 +572,6 @@
     });
 </script>
 
-{{--<script>--}}
-{{--    $(document).ready(function () {--}}
-{{--        $('#departmentSelect').select2();--}}
-
-{{--        $('#departmentSelect').on('change', function () {--}}
-{{--            var selectedValues = $(this).val();--}}
-{{--            var allDepartmentsSelected = selectedValues.includes('all_departments');--}}
-
-{{--            if (allDepartmentsSelected) {--}}
-{{--                $('#departmentSelect').val(['all_departments']).trigger('change');--}}
-{{--                $('#departmentSelect option').each(function () {--}}
-{{--                    if ($(this).val() !== 'all_departments') {--}}
-{{--                        $(this).prop('disabled', true);--}}
-{{--                    }--}}
-{{--                });--}}
-{{--            } else {--}}
-{{--                $('#departmentSelect option').each(function () {--}}
-{{--                    $(this).prop('disabled', false);--}}
-{{--                });--}}
-{{--            }--}}
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
 
 </body>
 </html>

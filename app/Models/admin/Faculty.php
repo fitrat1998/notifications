@@ -2,6 +2,7 @@
 
 namespace App\Models\admin;
 
+use App\Models\Direction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,11 +24,14 @@ class Faculty extends Model
         return $faculty !== false;
     }
 
-
-
     public function user()
     {
         return $this->hasMany(User::class, 'faculty_id');
+    }
+
+    public function departments()
+    {
+        return $this->hasMany(Direction::class);
     }
 
 }

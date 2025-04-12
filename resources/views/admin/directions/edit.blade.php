@@ -37,7 +37,7 @@
 
                             <div class="form-group">
                                 <label>Fakultetlar</label>
-                                <select class="form-control rounded-1 select2" name="department_id"
+                                <select class="form-control rounded-1 select2" name="faculty_id"
                                         data-placeholder="Iltimos tanlang" style="width: 100%;">
                                     <option value="">fakultetni tanlang</option>
                                     @foreach($faculties as $faculty)

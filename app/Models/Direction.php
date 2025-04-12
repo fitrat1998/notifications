@@ -11,7 +11,7 @@ class Direction extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name', 'user_id','department_id'];
+    protected $fillable = ['name', 'user_id','faculty_id'];
 
     public function user()
     {
@@ -20,7 +20,7 @@ class Direction extends Model
 
     public function faculty()
     {
-        return $this->belongsTo(Faculty::class, 'department_id', 'id');
+        return $this->belongsTo(Faculty::class, 'faculty_id', 'id');
     }
 
 }

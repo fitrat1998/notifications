@@ -31,11 +31,6 @@ $('.duallistbox').bootstrapDualListbox({
 });
 
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 6bda4a5 (Initial commit)
 function alertMessage(message = '', type = 'default') {
 
     let messageDiv =
@@ -264,10 +259,6 @@ $(function () {
 });
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 6bda4a5 (Initial commit)
 $(document).on('click', '.toggle-password', function () {
     $(this).toggleClass("fa-eye fa-eye-slash");
     var input = $($(this).attr("toggle"));
@@ -278,11 +269,6 @@ $(document).on('click', '.toggle-password', function () {
     }
 });
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 6bda4a5 (Initial commit)
 $('#password-field, #password-confirm').on('keyup', function () {
     if ($('#password-field').val() === $('#password-confirm').val()) {
         $('#message').html('Tasdiqlandi').css('color', 'green');
@@ -300,3 +286,32 @@ $(document).on('click', '.toggle-editor', function () {
         editor.css('display', 'none');
     }
 });
+
+
+$(document).ready(function () {
+    $('#faculty_id').on('change', function () {
+        var facultyId = $(this).val();
+        $('#direction_id').empty().append('<option value="">Yuklanmoqda...</option>');
+
+        if (facultyId) {
+            $.ajax({
+                url: '/faculty/' + facultyId, // bu yerda show route ishlatiladi
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response)
+                    $('#direction_id').empty().append('<option value="">Yo‘nalishni tanlang</option>');
+                    $.each(response.departments, function (key, dept) {
+                        $('#direction_id').append('<option value="' + dept.id + '">' + dept.name + '</option>');
+                    });
+                },
+                error: function () {
+                    $('#direction_id').empty().append('<option value="">Xatolik yuz berdi</option>');
+                }
+            });
+        } else {
+            $('#direction_id').empty().append('<option value="">Avval fakultetni tanlang</option>');
+        }
+    });
+});
+
