@@ -315,3 +315,33 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+
+    $('.direction').on('change', function () {
+        var directionId = $(this).val();
+        $('#group_id').empty().append('<option value="">Yuklanmoqda...</option>');
+
+        if (directionId) {
+            $.ajax({
+                url: '/subjects/' + directionId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    $('#group_id').empty().append('<option value="">Guruhni tanlang</option>');
+                    $.each(response, function (key, group) {
+                        $('#group_id').append('<option value="' + group.id + '">' + group.name + '</option>');
+                    });
+                },
+                error: function () {
+                    $('#group_id').empty().append('<option value="">Xatolik yuz berdi</option>');
+                }
+            });
+        } else {
+            $('#group_id').empty().append('<option value="">Avval yo‘nalishni tanlang</option>');
+        }
+    });
+});
+
+
+

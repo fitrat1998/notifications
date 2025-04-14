@@ -143,6 +143,14 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('subjects.index') }}"
+                           class="nav-link {{ Request::is('subjects*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <p>Fanlar</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ route('documenttypes.index') }}"
                            class="nav-link {{ Request::is('documenttypes*') ? 'active' : '' }}">
                             <i class="fa-solid fa-folder-tree"></i>

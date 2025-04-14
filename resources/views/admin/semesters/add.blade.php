@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kafedra</h1>
+                    <h1>Semestr</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('index') }}">Bosh sahifa</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">Kafedra</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">Semestr</a></li>
                         <li class="breadcrumb-item active">Qo'shish</li>
                     </ol>
                 </div>
@@ -31,10 +31,10 @@
                     <!-- /.card-header -->
                     <div class="card-body">
 
-                        <form action="{{ route('branches.store') }}" method="post">
+                        <form action="{{ route('semesters.store') }}" method="post">
                             @csrf
                             <div class="form-group">
-                                <label>Kafedra nomi</label>
+                                <label>Semestr</label>
                                 <input type="text" name="name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('name') }}" required>
                                 @if($errors->has('name'))
                                     <span class="error invalid-feedback">{{ $errors->first('name') }}</span>

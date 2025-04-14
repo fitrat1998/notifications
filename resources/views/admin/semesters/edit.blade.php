@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Bo'limlar</h1>
+                    <h1>Semesterlar</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('index') }}">Bosh sahifa</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">Bo'limlar</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">Semesterlar</a></li>
                         <li class="breadcrumb-item active">Tahrirlash</li>
                     </ol>
                 </div>
@@ -31,19 +31,19 @@
                     <!-- /.card-header -->
                     <div class="card-body">
 
-                        <form action="{{ route('branches.update',$branch->id)  }}" method="post">
+                        <form action="{{ route('semesters.update',$semester->id)  }}" method="post">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label>Bo'lim nomi</label>
-                                <input type="text" name="name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('name',$branch->name) }}" required>
+                                <label>Semester nomi</label>
+                                <input type="text" name="name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('name',$semester->name) }}" required>
                                 @if($errors->has('name'))
                                     <span class="error invalid-feedback">{{ $errors->first('name') }}</span>
                                 @endif
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success float-right">Saqlash</button>
-                                <a href="{{ route('branches.index') }}" class="btn btn-danger float-left">Bekor qilish</a>
+                                <a href="{{ route('semesters.index') }}" class="btn btn-danger float-left">Bekor qilish</a>
                             </div>
                         </form>
 

@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kafedralar</h1>
+                    <h1>Semestrlar</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('index') }}">Bosh sahifa</a></li>
-                        <li class="breadcrumb-item active">Kafedralar</li>
+                        <li class="breadcrumb-item active">Semestrlar</li>
                     </ol>
                 </div>
             </div>
@@ -24,10 +24,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        @can('branches.create')
-                            <a href="{{ route('branches.create') }}" class="btn btn-success btn-sm float-right">
+                        @can('semesters.create')
+                            <a href="{{ route('semesters.create') }}" class="btn btn-success btn-sm float-right">
                                 <span class="fas fa-plus-circle"></span>
-                                Kafedra qo'shish
+                                Semestr qo'shish
                             </a>
                             {{--                             <a href="" class="btn btn-danger" id="deleteAllSellected"> O'chirish</a>--}}
                         @endcan
@@ -41,25 +41,25 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Kafedra nomi</th>
+                                <th>Semestr</th>
                                 <th>Kim tomonidan yaratilgan</th>
                                 <th>Amallar</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($branches as $branch)
-                                <tr id="datas_ids{{ $branch->id }}">
+                            @foreach($semestrs as $semestr)
+                                <tr id="datas_ids{{ $semestr->id }}">
 
                                     <td class="w-25">{{ $loop->iteration }}</td>
-                                    <td class="w-25">{{ $branch->name }}</td>
-                                    <td class="w-25">{{ $branch->user->firstname }} {{ $branch->user->lastname }}</td>
+                                    <td class="w-25">{{ $semestr->name }}</td>
+                                    <td class="w-25">{{ $semestr->user->firstname }} {{ $semestr->user->lastname }}</td>
                                     <td class="text-center w-25">
-                                        @can('branches.destroy')
-                                            <form action="{{ route('branches.destroy',$branch->id) }}" method="post">
+                                        @can('semesters.destroy')
+                                            <form action="{{ route('semesters.destroy',$semestr->id) }}" method="post">
                                                 @csrf
                                                 <div class="btn-category">
-                                                    @can('branches.edit')
-                                                        <a href="{{ route('branches.edit',$branch->id) }}" type="button"
+                                                    @can('semesters.edit')
+                                                        <a href="{{ route('semesters.edit',$semestr->id) }}" type="button"
                                                            class="btn btn-primary btn-sm"> <i class="fa fa-pencil"></i></a>
                                                     @endcan
                                                     <input name="_method" type="hidden" value="DELETE">
